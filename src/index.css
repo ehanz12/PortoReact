@@ -20,7 +20,7 @@
 
 @layer base {
   body {
-    @apply bg-black text-white font-body text-xl overflow-x-clip;
+    @apply bg-black text-white font-body text-xl overflow-x-hidden;
   }
   h3 {
     @apply font-heading font-medium uppercase text-2xl;
