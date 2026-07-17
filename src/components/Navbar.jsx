@@ -44,6 +44,7 @@ const Navbar = () => {
       <div className={`fixed z-30 inset-0 bg-black text-white flex flex-col items-center
       justify-center gap-8 transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-y-0 ' : '-translate-y-full'}`} onClick={() => SetMenuOpen(false)}>
       <Link to="/" className="menu-links">Home</Link>
+      <Link to="/#about" className="menu-links">About</Link>
       <Link to="/projects" className="menu-links">Projects</Link>
       <Link to="mailto:rhanssap@gmail.com" className="menu-links">Contact</Link>
       </div>

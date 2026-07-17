@@ -106,6 +106,58 @@
     @apply text-[10vw] lg:text-[6vw] font-heading font-medium uppercase
       lg:opacity-60 hover:opacity-100
   }
+
+  /* ─── Gradient Text ─── */
+  .gradient-text {
+    background: linear-gradient(90deg, #FF4D6D 0%, #BD3EB2 40%, #7B2FF7 70%, #2F86F7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ─── Hero decorative glows ─── */
+  .hero-glow-1 {
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 60vw;
+    height: 60vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(123, 47, 247, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-glow-2 {
+    position: absolute;
+    bottom: -20%;
+    left: -15%;
+    width: 50vw;
+    height: 50vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(47, 134, 247, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── Hero photo border glow ─── */
+  .hero-photo-border {
+    background: linear-gradient(135deg, rgba(255,77,109,0.3), rgba(123,47,247,0.3), rgba(47,134,247,0.3));
+    border-radius: 24px;
+    padding: 2px;
+    z-index: 0;
+  }
+
+  /* ─── About photo background ─── */
+  .about-photo-bg {
+    background: linear-gradient(135deg, #f0f0ff 0%, #e8e0ff 50%, #f0f0ff 100%);
+    z-index: 0;
+  }
+
+  /* ─── Skill bar gradient ─── */
+  .skill-bar-gradient {
+    background: linear-gradient(90deg, #FF4D6D 0%, #BD3EB2 40%, #7B2FF7 70%, #2F86F7 100%);
+  }
 }
 
 @media(max-width: 1023px) {

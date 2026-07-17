@@ -16,7 +16,7 @@ const Footer = () => {
           <h5 className="font-medium mb-5">Services</h5>
           <ul className="flex flex-col gap-2 text-base lg:text-lg">
             <li>
-              <a href="">backend Service</a>
+              <a href="">Fullstack Development</a>
             </li>
             <li>
               <a href="">Api Development</a>
@@ -30,7 +30,7 @@ const Footer = () => {
           <h5 className="font-medium mb-5">Accessbility</h5>
           <ul className="flex flex-col gap-2 text-base lg:text-lg">
             <li>
-              <a href="">backend Development</a>
+              <a href="">Fullstack Development</a>
             </li>
             <li>
               <a href="">24/7 WhatApps & Email</a>

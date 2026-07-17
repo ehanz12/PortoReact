@@ -18,13 +18,13 @@ const Service = () => {
                     <span className='text-gray-400 text-lg font-heading
                     tracking-wide block mb-4'>01</span>
                     <h2 className='text-[8vw] md:text-6xl font-heading font-bold leading-none'>
-                        Backend  <br />Services
+                        Fullstack  <br />Development
                     </h2>
                 </div>
                 {/* Right Side */}
                 <div className="flex items-center">
                     <p className='text-lg lg:text-xl leading-relaxed'>
-                        Saya membangun sistem sisi server yang menangani logika aplikasi, pemrosesan data, dan komunikasi API. Fokus saya adalah menciptakan layanan backend yang efisien, terstruktur, dan mudah dipelihara agar dapat terintegrasi dengan baik dengan frontend.
+                        Saya membangun aplikasi web lengkap mulai dari sisi klien (frontend) yang responsif dan interaktif hingga sisi server (backend) yang menangani logika bisnis, pemrosesan data, serta komunikasi API secara efisien dan aman.
                     </p>
                 </div>
             </div>

@@ -10,14 +10,14 @@ const  projects = [
     name: "Dashboard Pribadi",
     image: project1,
     link: "https://www.reihan.biz.id",
-    description: "Web Dashboard To-Do List (Backend-Focused)Web Dashboard To-Do List ini merupakan aplikasi berbasis web yang dikembangkan untuk membantu pengguna mengelola aktivitas dan tugas harian secara terstruktur dan efisien. Aplikasi ini dibangun dengan arsitektur client–server, di mana backend menggunakan Golang sebagai penyedia API dan pengelola logika bisnis, sementara frontend menggunakan React untuk menampilkan antarmuka yang interaktif."
+    description: "Web Dashboard To-Do List (Fullstack) ini merupakan aplikasi berbasis web yang dikembangkan untuk membantu pengguna mengelola aktivitas harian secara terstruktur dan efisien. Aplikasi ini dibangun dengan arsitektur fullstack client-server, memadukan frontend React yang interaktif dengan backend Golang yang mengelola logika bisnis dan API secara andal."
   },
   {
     id: 2,
     name: "Management Perpustakaan",
     image: project2,
     link: "",
-    description: "Web Perpustakaan : aplikasi berbasis web yang digunakan untuk mengelola data buku, anggota, dan transaksi peminjaman secara terpusat dan efisien. Sistem ini dilengkapi dengan fitur autentikasi pengguna, manajemen data (CRUD), serta pencatatan peminjaman dan pengembalian buku. Backend dirancang untuk memastikan keamanan data, konsistensi transaksi, dan kemudahan integrasi dengan frontend melalui API."
+    description: "Web Perpustakaan: aplikasi fullstack berbasis web untuk mengelola data buku, anggota, dan transaksi peminjaman secara terpusat. Sistem ini dilengkapi dengan antarmuka frontend yang responsif untuk CRUD dan pencatatan peminjaman, serta backend yang kokoh untuk memastikan keamanan data, konsistensi transaksi, dan integrasi API yang mulus."
   },
   {
     id: 3,
@@ -31,14 +31,14 @@ const  projects = [
     name: "Blogravel",
     image: project4,
     link: "",
-    description: "Blog  platform berbasis web yang memungkinkan pengguna untuk membuat, mengelola, dan mempublikasikan artikel secara terstruktur. Sistem ini dilengkapi dengan autentikasi pengguna, manajemen konten (CRUD), pengelolaan kategori dan komentar, serta API backend yang dirancang aman, terstruktur, dan mudah dikembangkan untuk mendukung kebutuhan frontend."
+    description: "Blogravel: platform blog fullstack berbasis web yang memungkinkan pengguna membuat dan mempublikasikan artikel secara terstruktur. Dilengkapi dengan tampilan frontend yang dinamis untuk pembaca dan panel admin, autentikasi pengguna, manajemen konten (CRUD), serta backend API Laravel yang aman, terstruktur, dan mudah dikembangkan."
   },
   {
     id: 5,
     name: "Website Capture The Flag",
     image: project5,
     link: "",
-    description: "Capture The Flag (CTF) aplikasi berbasis web yang dirancang sebagai platform latihan keamanan siber, khususnya dalam pengujian dan eksploitasi sistem secara legal. Backend aplikasi ini berperan sebagai pusat pengelolaan challenge, validasi flag, autentikasi peserta, serta perhitungan skor dan leaderboard .Backend dibangun menggunakan arsitektur RESTful API yang menangani proses submission flag, verifikasi keabsahan jawaban, pembatasan akses challenge, dan pencatatan aktivitas peserta. Sistem autentikasi dan otorisasi diterapkan untuk memastikan setiap flag hanya dapat dikirim oleh pengguna yang sah."
+    description: "Website Capture The Flag (CTF): platform latihan keamanan siber fullstack untuk pengujian sistem secara legal. Aplikasi ini memadukan frontend dashboard interaktif (leaderboard, skor, dan submission) dengan backend RESTful API yang menangani pengelolaan challenge, validasi flag secara real-time, autentikasi aman, serta pencatatan aktivitas peserta secara terstruktur."
   },
 ]
 
