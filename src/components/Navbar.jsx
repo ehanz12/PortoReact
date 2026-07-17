@@ -42,11 +42,13 @@ const Navbar = () => {
 
       {/* Full Screen Menu */}
       <div className={`fixed z-30 inset-0 bg-black text-white flex flex-col items-center
-      justify-center gap-8 transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-y-0 ' : '-translate-y-full'}`} onClick={() => SetMenuOpen(false)}>
-      <Link to="/" className="menu-links">Home</Link>
-      <Link to="/#about" className="menu-links">About</Link>
-      <Link to="/projects" className="menu-links">Projects</Link>
-      <Link to="mailto:rhanssap@gmail.com" className="menu-links">Contact</Link>
+      justify-center gap-5 lg:gap-8 overflow-y-auto py-10 transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-y-0 ' : '-translate-y-full'}`} onClick={() => SetMenuOpen(false)}>
+      <Link to="/" className="menu-links text-[8vw] lg:text-[4vw]">Home</Link>
+      <Link to="/#about" className="menu-links text-[8vw] lg:text-[4vw]">About</Link>
+      <Link to="/#experience" className="menu-links text-[8vw] lg:text-[4vw]">Experience</Link>
+      <Link to="/projects" className="menu-links text-[8vw] lg:text-[4vw]">Projects</Link>
+      <Link to="/#github" className="menu-links text-[8vw] lg:text-[4vw]">GitHub</Link>
+      <Link to="mailto:rhanssap@gmail.com" className="menu-links text-[8vw] lg:text-[4vw]">Contact</Link>
       </div>
     </>
   );

@@ -19,6 +19,9 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-black text-white font-body text-xl overflow-x-hidden;
   }
