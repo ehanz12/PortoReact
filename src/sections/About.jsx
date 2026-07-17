@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-import profilePhoto from "../assets/images/foto1.png";
+import profilePhoto from "../assets/images/foto1.webp";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
