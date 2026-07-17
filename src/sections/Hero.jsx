@@ -101,10 +101,10 @@ const Hero = () => {
               <br />
               <span className="text-stroke cursor-pointer">Developer</span>
             </h2>
-
+{/* 
             <p className="hero-badge text-white/60 text-lg mb-8 max-w-md leading-relaxed">
               Membangun aplikasi web ujung-ke-ujung (end-to-end) mulai dari antarmuka pengguna yang interaktif hingga logika server-side dan sistem database yang andal.
-            </p>
+            </p> */}
 
             <div className="flex flex-wrap gap-4 items-center">
               <ButtonGradient

@@ -114,7 +114,7 @@ const About = () => {
               {/* Floating chip */}
               <div className="absolute bottom-6 -right-6 bg-black text-white rounded-2xl px-5 py-4 shadow-xl">
                 <p className="text-xs text-white/50 font-body">Kelas</p>
-                <p className="text-sm font-heading font-bold">X RPL 2</p>
+                <p className="text-sm font-heading font-bold">XII RPL 2</p>
               </div>
             </div>
           </div>
