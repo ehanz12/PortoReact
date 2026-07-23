@@ -11,7 +11,7 @@ const experienceData = [
     role: "Fullstack Developer (PKL)",
     company: "PT Kapsulindo Nusantara",
     location: "Bogor, Indonesia",
-    period: "Oktober 2025 - Januari 2025",
+    period: "Oktober 2025 - Desember 2025",
     type: "Praktek Kerja Lapangan (PKL)",
     description: "Mengembangkan dan memelihara aplikasi web internal dan layanan RESTful API. Berkolaborasi dalam tim pengembang untuk merancang skema database yang optimal serta antarmuka admin panel yang interaktif.",
     accomplishments: [
