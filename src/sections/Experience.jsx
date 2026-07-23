@@ -8,23 +8,23 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 const experienceData = [
   {
     id: 1,
-    role: "Fullstack Developer Intern (PKL)",
-    company: "PT Sinergi Portal Mas",
+    role: "Fullstack Developer (PKL)",
+    company: "PT Kapsulindo Nusantara",
     location: "Bogor, Indonesia",
-    period: "Januari 2025 - April 2025",
+    period: "Oktober 2025 - Januari 2025",
     type: "Praktek Kerja Lapangan (PKL)",
     description: "Mengembangkan dan memelihara aplikasi web internal dan layanan RESTful API. Berkolaborasi dalam tim pengembang untuk merancang skema database yang optimal serta antarmuka admin panel yang interaktif.",
     accomplishments: [
-      "Merancang dan mengimplementasikan RESTful API menggunakan Laravel dan Golang untuk integrasi data yang cepat.",
-      "Membangun dashboard admin interaktif menggunakan React dan Tailwind CSS untuk efisiensi monitoring data.",
-      "Mengoptimalkan query database PostgreSQL & MySQL yang meningkatkan kecepatan pemrosesan data sebesar 25%.",
+      "Merancang dan mengimplementasikan RESTful API menggunakan Framework Code Igniter untuk integrasi data yang cepat.",
+      "Membangun dashboard admin interaktif menggunakan HTML, Tailwind CSS, dan Bootstrap untuk efisiensi monitoring data.",
+      "Mengoptimalkan query database MySQL yang meningkatkan kecepatan pemrosesan data sebesar 25%.",
       "Menggunakan Git & GitHub untuk version control dan kolaborasi tim yang terstruktur."
     ],
-    tech: ["Golang", "PHP / Laravel", "React", "PostgreSQL", "Tailwind CSS", "Git"]
+    tech: ["PHP / CodeIgniter", "Bootstrap", "MySQL", "Tailwind CSS", "Git"]
   },
   {
     id: 2,
-    role: "Junior Web Developer (Project-Based)",
+    role: "Junior Fullstack Developer (Project-Based)",
     company: "SMK Plus Pelita Nusantara",
     location: "Bogor, Indonesia",
     period: "Agustus 2024 - Desember 2024",
@@ -35,7 +35,7 @@ const experienceData = [
       "Membangun Website Capture The Flag (CTF) sederhana untuk kompetisi internal jurusan RPL.",
       "Menerapkan algoritma pencarian dan pagination data untuk meningkatkan user experience."
     ],
-    tech: ["PHP", "MySQL", "JavaScript", "Bootstrap", "Git"]
+    tech: ["PHP / Laravel", "MySQL", "JavaScript", "Tailwind CSS", "Git"]
   }
 ];
 
