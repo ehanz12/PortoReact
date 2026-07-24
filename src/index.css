@@ -32,7 +32,7 @@
 
 @layer components {
   .main-container {
-    @apply max-w-400 w-full m-auto px-4 lg:px-12
+    @apply max-w-[1400px] w-full mx-auto px-4 lg:px-12;
   }
   h1 {
     position : relative;
@@ -80,15 +80,19 @@
   }
 
   @keyframes marquee {
-    0% {transform : translateX(-100%);}
-    100%{transform: translateX(0);}
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
   }
 
   .animate-marquee {
-    animation: marquee 15s linear infinite;
+    animation: marquee 7s linear infinite;
   }
   .animate-marquee-reverse {
-    animation: marquee 15s linear infinite reverse;
+    animation: marquee 7s linear infinite reverse;
   }
 
   @keyframes rotate360 {
@@ -97,11 +101,11 @@
   }
 
   .marquee-logo1 {
-    animation: rotate360 10s linear infinite;
+    animation: rotate360 7s linear infinite;
     transform-origin: center;
   }
   .marquee-logo2 {
-    animation: rotate360 10s linear infinite reverse;
+    animation: rotate360 7s linear infinite reverse;
     transform-origin: center;
   }
 

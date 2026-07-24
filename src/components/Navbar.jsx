@@ -25,7 +25,7 @@ const Navbar = () => {
     <>
       <nav
         ref={navRef}
-        className="fixed top-0 w-full mix-blend-difference z-31"
+        className="fixed top-0 w-full mix-blend-difference z-50"
       >
         <div className="main-container py-6 flex justify-between items-center">
           <img src={Logo} className="h-10 w-auto" />
