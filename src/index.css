@@ -110,8 +110,8 @@
   }
 
   .menu-links {
-    @apply text-[10vw] lg:text-[6vw] font-heading font-medium uppercase
-      lg:opacity-60 hover:opacity-100
+    @apply text-[8vw] lg:text-[5vw] font-heading font-medium uppercase
+      lg:opacity-60 hover:opacity-100 transition-all duration-300
   }
 
   /* ─── Gradient Text ─── */

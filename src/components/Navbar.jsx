@@ -27,28 +27,34 @@ const Navbar = () => {
         ref={navRef}
         className="fixed top-0 w-full mix-blend-difference z-50"
       >
-        <div className="main-container py-6 flex justify-between items-center">
-          <img src={Logo} className="h-10 w-auto" />
-          <div onClick={() => SetMenuOpen(!menuOpen)} className="flex flex-col gap-1.5 cursor-pointer">
-            <span className={`inline-block w-10 lg:w-12 h-0.5 bg-white transition-all duration-300 ease-in-out origin-center
-              ${menuOpen ? 'rotate-45 translate-y-1' : ''}`
+        <div className="main-container py-5 lg:py-8 flex justify-between items-center">
+          <img src={Logo} className="h-8 lg:h-12 w-auto" alt="Logo" />
+          <div 
+            onClick={() => SetMenuOpen(!menuOpen)} 
+            className="flex flex-col gap-1.5 cursor-pointer group"
+          >
+            <span className={`inline-block w-8 lg:w-12 h-0.5 bg-white transition-all duration-300 ease-in-out 
+              ${menuOpen ? 'rotate-45 translate-y-2' : ''}`
               }></span>
-            <span className={`inline-block w-10 lg:w-12 h-0.5 bg-white transition-all duration-300 ease-in-out origin-center
-              ${menuOpen ? '-rotate-45 -translate-y-1' : ''}
+            <span className={`inline-block w-8 lg:w-12 h-0.5 bg-white transition-all duration-300 ease-in-out 
+              ${menuOpen ? 'opacity-0' : 'opacity-100'}`
+              }></span>
+            <span className={`inline-block w-8 lg:w-12 h-0.5 bg-white transition-all duration-300 ease-in-out 
+              ${menuOpen ? '-rotate-45 -translate-y-2' : ''}
               `}></span>
           </div>
         </div>
       </nav>
 
       {/* Full Screen Menu */}
-      <div className={`fixed z-30 inset-0 bg-black text-white flex flex-col items-center
-      justify-center gap-5 lg:gap-8 overflow-y-auto py-10 transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-y-0 ' : '-translate-y-full'}`} onClick={() => SetMenuOpen(false)}>
-      <Link to="/" className="menu-links text-[8vw] lg:text-[4vw]">Home</Link>
-      <Link to="/#about" className="menu-links text-[8vw] lg:text-[4vw]">About</Link>
-      <Link to="/#experience" className="menu-links text-[8vw] lg:text-[4vw]">Experience</Link>
-      <Link to="/projects" className="menu-links text-[8vw] lg:text-[4vw]">Projects</Link>
-      <Link to="/#github" className="menu-links text-[8vw] lg:text-[4vw]">GitHub</Link>
-      <Link to="mailto:rhanssap@gmail.com" className="menu-links text-[8vw] lg:text-[4vw]">Contact</Link>
+      <div className={`fixed z-[40] inset-0 bg-black text-white flex flex-col items-center
+      justify-center gap-4 lg:gap-8 overflow-y-auto py-10 transition-transform duration-500 ease-in-out ${menuOpen ? 'translate-y-0' : '-translate-y-full'}`} onClick={() => SetMenuOpen(false)}>
+        <Link to="/" className="menu-links">Home</Link>
+        <Link to="/#about" className="menu-links">About</Link>
+        <Link to="/#experience" className="menu-links">Experience</Link>
+        <Link to="/projects" className="menu-links">Projects</Link>
+        <Link to="/#github" className="menu-links">GitHub</Link>
+        <Link to="mailto:rhanssap@gmail.com" className="menu-links">Contact</Link>
       </div>
     </>
   );
