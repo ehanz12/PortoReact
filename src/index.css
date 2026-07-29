@@ -21,6 +21,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
   }
   body {
     @apply bg-black text-white font-body text-xl overflow-x-hidden;
