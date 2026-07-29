@@ -84,16 +84,16 @@ const Hero = () => {
         <div className="hero-glow-1" />
         <div className="hero-glow-2" />
 
-        <div className="main-container min-h-screen flex flex-col lg:flex-row lg:justify-between lg:items-center items-start lg:py-12 max-lg:pt-40 gap-12">
+        <div className="main-container min-h-screen flex flex-col lg:flex-row lg:justify-center lg:items-center items-center text-center lg:text-left lg:py-12 max-lg:pt-40 gap-12 lg:gap-24">
           {/* Left: Text Content */}
-          <div className="flex-1 z-10">
+          <div className="flex-1 z-10 flex flex-col items-center lg:items-start">
             {/* Status Badge */}
-            <div className="hero-badge flex items-center gap-2 mb-6 w-fit bg-white/5 border border-white/10 rounded-full px-4 py-2 backdrop-blur-sm">
+            <div className="hero-badge flex items-center gap-2 mb-6 w-fit bg-white/5 border border-white/10 rounded-full px-4 py-2 backdrop-blur-sm mx-auto lg:mx-0">
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
               <span className="text-sm text-white/70 font-body">Available for Work</span>
             </div>
 
-            <h1 className="text-3xl lg:text-[3.2vw] uppercase font-heading font-semibold">
+            <h1 className="text-3xl lg:text-[3.2vw] uppercase font-heading font-semibold w-fit mx-auto lg:mx-0">
               Reihan Aditya
             </h1>
             <h2 className="text-5xl sm:text-6xl lg:text-[8vw] uppercase font-heading font-bold leading-none tracking-tight mt-3 mb-6">
@@ -106,7 +106,7 @@ const Hero = () => {
               Membangun aplikasi web ujung-ke-ujung (end-to-end) mulai dari antarmuka pengguna yang interaktif hingga logika server-side dan sistem database yang andal.
             </p> */}
 
-            <div className="flex flex-wrap gap-4 items-center">
+            <div className="flex flex-wrap gap-4 items-center justify-center lg:justify-start">
               <ButtonGradient
                 text={"Let's Talk"}
                 link={"mailto:rhanssap@gmail.com"}
@@ -122,7 +122,7 @@ const Hero = () => {
             </div>
 
             {/* Stats Row */}
-            <div className="hero-badge flex gap-8 mt-12 pt-8 border-t border-white/10">
+            <div className="hero-badge flex gap-8 mt-12 pt-8 border-t border-white/10 justify-center lg:justify-start w-full lg:w-auto">
               <div>
                 <p className="text-3xl font-heading font-bold gradient-text">5+</p>
                 <p className="text-white/50 text-sm mt-1">Proyek Selesai</p>
