@@ -25,7 +25,7 @@ const Navbar = () => {
     <>
       <nav
         ref={navRef}
-        className="fixed top-0 w-full mix-blend-difference z-50"
+        className="fixed top-0 w-full  z-50"
       >
         <div className="main-container py-5 lg:py-8 flex justify-between items-center">
           <img src={Logo} className="h-8 lg:h-12 w-auto" alt="Logo" />
