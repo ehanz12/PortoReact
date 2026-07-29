@@ -25,9 +25,9 @@ const Navbar = () => {
     <>
       <nav
         ref={navRef}
-        className="fixed top-0 w-full  z-50"
+        className="fixed top-0 left-0 right-0 z-50 bg-black"
       >
-        <div className="main-container py-5 lg:py-8 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-5">
           <img src={Logo} className="h-8 lg:h-12 w-auto" alt="Logo" />
           <div
             onClick={() => SetMenuOpen(!menuOpen)}
