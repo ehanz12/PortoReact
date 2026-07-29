@@ -88,7 +88,7 @@ const Hero = () => {
           {/* Left: Text Content */}
           <div className="flex-1 z-10 flex flex-col items-center lg:items-start">
             {/* Status Badge */}
-            <div className="hero-badge flex items-center gap-2 mb-6 w-fit bg-white/5 border border-white/10 rounded-full px-4 py-2 backdrop-blur-sm mx-auto lg:mx-0">
+            <div className="block md:hidden hero-badge flex items-center gap-2 mb-6 w-fit bg-white/5 border border-white/10 rounded-full px-4 py-2 backdrop-blur-sm mx-auto lg:mx-0">
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
               <span className="text-sm text-white/70 font-body">Available for Work</span>
             </div>
@@ -101,7 +101,7 @@ const Hero = () => {
               <br />
               <span className="text-stroke cursor-pointer">Developer</span>
             </h2>
-{/* 
+            {/* 
             <p className="hero-badge text-white/60 text-lg mb-8 max-w-md leading-relaxed">
               Membangun aplikasi web ujung-ke-ujung (end-to-end) mulai dari antarmuka pengguna yang interaktif hingga logika server-side dan sistem database yang andal.
             </p> */}
