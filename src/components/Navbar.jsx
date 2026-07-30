@@ -49,9 +49,19 @@ const Navbar = () => {
             <img src={Logo} className="h-8 lg:h-12 w-auto" alt="Logo" />
           </Link>
 
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-8">
+            <Link to="/" className="text-white/70 hover:text-white transition-colors duration-300 text-lg font-medium">Home</Link>
+            <Link to="/#about" className="text-white/70 hover:text-white transition-colors duration-300 text-lg font-medium">About</Link>
+            <Link to="/#experience" className="text-white/70 hover:text-white transition-colors duration-300 text-lg font-medium">Experience</Link>
+            <Link to="/projects" className="text-white/70 hover:text-white transition-colors duration-300 text-lg font-medium">Projects</Link>
+            <Link to="/#github" className="text-white/70 hover:text-white transition-colors duration-300 text-lg font-medium">GitHub</Link>
+            <a href="mailto:rhanssap@gmail.com" className="btn border text-lg font-medium rounded-full px-6 py-2 hover:text-white transition-colors duration-300">Contact</a>
+          </div>
+
           <button
             onClick={() => SetMenuOpen(!menuOpen)}
-            className="flex flex-col gap-1.5 cursor-pointer z-50 p-2 -mr-2"
+            className="flex flex-col gap-1.5 cursor-pointer z-50 p-2 -mr-2 lg:hidden"
             aria-label="Toggle Menu"
           >
             <span className={`inline-block w-8 lg:w-10 h-0.5 bg-white transition-all duration-300 ease-in-out 
