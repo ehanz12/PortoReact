@@ -84,7 +84,7 @@ const Hero = () => {
         <div className="hero-glow-1" />
         <div className="hero-glow-2" />
 
-        <div className="main-container min-h-screen flex flex-col lg:flex-row lg:justify-center lg:items-center items-center text-center lg:text-left lg:py-12 pt-28 lg:pt-12 gap-12 lg:gap-24">
+        <div className="main-container min-h-dvh flex flex-col lg:flex-row lg:justify-center lg:items-center items-center text-center lg:text-left lg:py-12 pt-24 lg:pt-12 gap-10 lg:gap-24">
           {/* Left: Text Content */}
           <div className="flex-1 z-10 flex flex-col items-center lg:items-start">
             {/* Status Badge */}

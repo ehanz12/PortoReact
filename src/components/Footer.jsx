@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <>
       {/* Divider */}
-      <div className="max-w-375 m-auto h-px bg-white opacity-10"></div>
+      <div className="max-w-[375px] m-auto h-px bg-white opacity-10"></div>
 
       <footer
         className="main-container grid md:grid-cols-2 lg:grid-cols-4 gap-10
@@ -51,7 +51,7 @@ const Footer = () => {
       </footer>
 
       {/* Divider */}
-      <div className="max-w-375 m-auto h-px bg-white opacity-10"></div>
+      <div className="max-w-[375px] m-auto h-px bg-white opacity-10"></div>
 
       <div className="main-container grid md:grid-cols-2 gap-3 py-6 lg:py-8
       max-md:text-center">
