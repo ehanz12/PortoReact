@@ -22,9 +22,14 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
+    scroll-padding-bottom: 80px;
   }
   body {
     @apply bg-black text-white font-body text-base md:text-xl overflow-x-hidden;
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+    @media (min-width: 1024px) {
+      padding-bottom: 0;
+    }
   }
   h3 {
     @apply font-heading font-medium uppercase text-2xl;
@@ -108,11 +113,6 @@
   .marquee-logo2 {
     animation: rotate360 7s linear infinite reverse;
     transform-origin: center;
-  }
-
-  .menu-links {
-    @apply text-[8vw] lg:text-[5vw] font-heading font-medium uppercase
-      lg:opacity-60 hover:opacity-100 transition-all duration-300
   }
 
   /* ─── Gradient Text ─── */
