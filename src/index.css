@@ -24,7 +24,7 @@
     scroll-padding-top: 80px;
   }
   body {
-    @apply bg-black text-white font-body text-xl overflow-x-hidden;
+    @apply bg-black text-white font-body text-base md:text-xl overflow-x-hidden;
   }
   h3 {
     @apply font-heading font-medium uppercase text-2xl;

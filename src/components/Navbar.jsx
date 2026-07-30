@@ -78,15 +78,14 @@ const Navbar = () => {
       </nav>
 
       {/* Full Screen Menu */}
-      <div className={`fixed z-[40] inset-0 bg-black text-white flex flex-col items-center
-      justify-center gap-6 lg:gap-8 overflow-y-auto pt-24 pb-12 transition-transform duration-500 ease-in-out ${menuOpen ? 'translate-y-0' : '-translate-y-full'}`} 
-      onClick={() => SetMenuOpen(false)}>
-        <Link to="/" className="menu-links">Home</Link>
-        <Link to="/#about" className="menu-links">About</Link>
-        <Link to="/#experience" className="menu-links">Experience</Link>
-        <Link to="/projects" className="menu-links">Projects</Link>
-        <Link to="/#github" className="menu-links">GitHub</Link>
-        <Link to="mailto:rhanssap@gmail.com" className="menu-links">Contact</Link>
+      <div className={`fixed z-[40] inset-0 bg-black/95 text-white flex flex-col items-center
+      justify-center gap-8 overflow-y-auto pt-24 pb-12 transition-transform duration-500 ease-in-out ${menuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
+        <Link to="/" onClick={(e) => e.stopPropagation()} className="menu-links">Home</Link>
+        <Link to="/#about" onClick={(e) => e.stopPropagation()} className="menu-links">About</Link>
+        <Link to="/#experience" onClick={(e) => e.stopPropagation()} className="menu-links">Experience</Link>
+        <Link to="/projects" onClick={(e) => e.stopPropagation()} className="menu-links">Projects</Link>
+        <Link to="/#github" onClick={(e) => e.stopPropagation()} className="menu-links">GitHub</Link>
+        <Link to="mailto:rhanssap@gmail.com" onClick={(e) => e.stopPropagation()} className="menu-links">Contact</Link>
       </div>
     </>
   );
