@@ -17,7 +17,7 @@ const Hero = () => {
       start: "top top",
       end: "bottom top",
       pin: true,
-      pinSpacing: false,
+      pinSpacing: true,
       scrub: 1,
     });
 
@@ -79,7 +79,7 @@ const Hero = () => {
 
   return (
     <>
-      <div ref={heroRef} className="relative overflow-hidden">
+      <div ref={heroRef} className="relative z-10 overflow-hidden">
         {/* Background decorative elements */}
         <div className="hero-glow-1" />
         <div className="hero-glow-2" />

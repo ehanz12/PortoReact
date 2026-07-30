@@ -73,7 +73,7 @@ const Work = () => {
               <button
                 key={project.id}
                 onClick={() => setActiveProject(project)}
-                className="relative rounded-2xl min-w-60 lg:min-w-xl h-64 lg:h-96 
+                className="relative rounded-2xl min-w-60 lg:min-w-[24rem] h-64 lg:h-96 
                            overflow-hidden group cursor-pointer shrink-0"
               >
                 <img

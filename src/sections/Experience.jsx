@@ -87,7 +87,7 @@ const Experience = () => {
     <section
       id="experience"
       ref={containerRef}
-      className="relative z-20 bg-white text-black py-24 lg:py-36 border-t border-gray-100"
+      className="relative z-20 bg-white text-black py-24 lg:py-36 border-t border-gray-100 overflow-hidden"
     >
       {/* Glow effect */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-indigo-50/50 blur-[120px] pointer-events-none -z-10" />

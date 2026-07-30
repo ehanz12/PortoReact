@@ -7,7 +7,7 @@ const services = [
     desc: 'Saya membangun aplikasi web lengkap mulai dari sisi klien (frontend) yang responsif dan interaktif hingga sisi server (backend) yang menangani logika bisnis, pemrosesan data, serta komunikasi API secara efisien dan aman.',
     bg: 'bg-black text-white',
     stickyTop: 'lg:top-4',
-    pb: 'lg:pb-160 pb-16',
+    pb: 'lg:pb-[40rem] pb-16',
   },
   {
     id: '02',
@@ -15,7 +15,7 @@ const services = [
     desc: 'Saya merancang dan mengembangkan RESTful API untuk menghubungkan aplikasi dengan database maupun layanan eksternal. Saya memastikan API tersusun dengan baik, aman, dan mudah digunakan oleh aplikasi frontend atau mobile.',
     bg: 'bg-[#E9E9F0] text-black',
     stickyTop: 'lg:top-1/3',
-    pb: 'lg:pb-92 pb-16',
+    pb: 'lg:pb-[23rem] pb-16',
   },
   {
     id: '03',

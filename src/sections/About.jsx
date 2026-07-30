@@ -46,11 +46,6 @@ const About = () => {
       },
     });
 
-    return () => {
-      quoteTween.scrollTrigger?.kill();
-      splitText.revert();
-    };
-
     // Animate photo
     gsap.from(".about-photo", {
       y: 60,
@@ -88,6 +83,11 @@ const About = () => {
         start: "top 85%",
       },
     });
+
+    return () => {
+      quoteTween.scrollTrigger?.kill();
+      splitText.revert();
+    };
   }, { scope: aboutRef });
 
   return (
@@ -100,7 +100,7 @@ const About = () => {
       <div className="main-container py-20 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Left – Photo */}
-          <div className="about-photo relative max-lg:order-2">
+          <div className="about-photo relative max-lg:order-2 overflow-hidden">
             <div className="relative">
               {/* Decorative blob behind photo */}
               <div className="absolute -inset-4 rounded-[40px] about-photo-bg" />
