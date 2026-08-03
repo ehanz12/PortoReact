@@ -8,6 +8,7 @@ import sertifikat2 from "../assets/images/sertifikat2.webp";
 import sertifikat3 from "../assets/images/sertifikat3.webp";
 import sertifikat4 from "../assets/images/sertifikat4.webp";
 import sertifikat5 from "../assets/images/sertifikat5.webp";
+import sertifikat6 from "../assets/images/sertifikat6.webp";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -47,9 +48,17 @@ const certificatesData = [
   {
     id: 5,
     image: sertifikat5,
-    title: "Galeria Potensi",
-    issuer: "Nasional Basic Public Speaking",
+    title: "Nasional Basic Public Speaking",
+    issuer: "Galeria Potensi",
     year: "2026",
+    type: "Webinar Participant"
+  },
+  {
+    id: 6,
+    image: sertifikat6,
+    title: "Introduction to Capture The Flag",
+    issuer: "ID-NetWorkers",
+    year: "2025",
     type: "Webinar Participant"
   }
 ];
