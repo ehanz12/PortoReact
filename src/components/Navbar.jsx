@@ -61,7 +61,7 @@ const Navbar = () => {
     <>
       <nav
         ref={navRef}
-        className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md"
+        className="fixed top-0 left-0 right-0 z-50 mix-blend-difference"
       >
         <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4 lg:py-5">
           <Link to="/" className="z-50">
