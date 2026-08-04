@@ -94,7 +94,7 @@ const Certificates = () => {
 
   return (
     <>
-      <section ref={sectionRef} className="bg-white text-black py-24 lg:py-40">
+      <section ref={sectionRef} id="certificates" className="bg-white text-black py-24 lg:py-40">
         {/* Section Header */}
         <div className="main-container mb-12 lg:mb-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
