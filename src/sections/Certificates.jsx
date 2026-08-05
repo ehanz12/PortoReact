@@ -9,6 +9,7 @@ import sertifikat3 from "../assets/images/sertifikat3.webp";
 import sertifikat4 from "../assets/images/sertifikat4.webp";
 import sertifikat5 from "../assets/images/sertifikat5.webp";
 import sertifikat6 from "../assets/images/sertifikat6.webp";
+import sertifikat7 from "../assets/images/sertifikat7.webp";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -59,6 +60,14 @@ const certificatesData = [
     title: "Introduction to Capture The Flag",
     issuer: "ID-NetWorkers",
     year: "2025",
+    type: "Webinar Participant"
+  },
+  {
+    id: 7,
+    Image: sertifikat7,
+    title: "Strategi Mendengar Aktif Untuk Menciptakan Komunikasi Yang Nyaman",
+    issuer: "Galeria Potensi",
+    year: "2026",
     type: "Webinar Participant"
   }
 ];
