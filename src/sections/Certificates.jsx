@@ -64,7 +64,7 @@ const certificatesData = [
   },
   {
     id: 7,
-    Image: sertifikat7,
+    image: sertifikat7,
     title: "Strategi Mendengar Aktif Untuk Menciptakan Komunikasi Yang Nyaman",
     issuer: "Galeria Potensi",
     year: "2026",
