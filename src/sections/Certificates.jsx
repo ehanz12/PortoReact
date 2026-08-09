@@ -10,6 +10,7 @@ import sertifikat4 from "../assets/images/sertifikat4.webp";
 import sertifikat5 from "../assets/images/sertifikat5.webp";
 import sertifikat6 from "../assets/images/sertifikat6.webp";
 import sertifikat7 from "../assets/images/sertifikat7.webp";
+import sertifikat8 from "../assets/images/sertifikat8.webp";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -69,6 +70,14 @@ const certificatesData = [
     issuer: "Galeria Potensi",
     year: "2026",
     type: "Webinar Participant"
+  },
+  {
+    id: 8,
+    image: sertifikat8,
+    title: "Festival Lomba Kompetisi Siswa Tingkat SMK Kabupaten Bogor",
+    issuer: "Disdik Jabar",
+    year: "2026",
+    type: "Prestasi / Contest"
   }
 ];
 
