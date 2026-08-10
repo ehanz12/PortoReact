@@ -11,6 +11,8 @@ import sertifikat5 from "../assets/images/sertifikat5.webp";
 import sertifikat6 from "../assets/images/sertifikat6.webp";
 import sertifikat7 from "../assets/images/sertifikat7.webp";
 import sertifikat8 from "../assets/images/sertifikat8.webp";
+import sertifikat9 from "../assets/images/sertifikat9.webp";
+import sertifikat10 from "../assets/images/sertifikat10.webp";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -78,6 +80,22 @@ const certificatesData = [
     issuer: "Disdik Jabar",
     year: "2026",
     type: "Prestasi / Contest"
+  },
+  {
+    id: 9,
+    image: sertifikat9,
+    title: "Python Developer",
+    issuer: "Sololearn",
+    year: "2025",
+    type: "Course Certificate"
+  },
+  {
+    id: 10,
+    image: sertifikat10,
+    tilte: "Vibe Koding",
+    issuer: "Sololearn",
+    year: "2025",
+    type: "Course Certificate"
   }
 ];
 
