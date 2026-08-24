@@ -7,7 +7,7 @@ const LABEL_ATTR = "data-cursor";
 const CustomCursor = () => {
   const dotRef = useRef(null);
   const ringRef = useRef(null);
-  const [enabled] = useState(isFinePointer);
+  const [enabled] = useState(() => isFinePointer() && window.innerWidth >= 1024);
 
   useEffect(() => {
     if (!enabled) return;

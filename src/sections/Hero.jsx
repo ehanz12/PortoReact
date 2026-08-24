@@ -180,10 +180,17 @@ const Hero = () => {
 
   return (
     <>
-      <div ref={heroRef} className="relative z-10 overflow-hidden">
+      <div ref={heroRef} className="relative z-10 overflow-hidden will-change-transform">
         {/* Background decorative elements */}
         <div className="hero-glow-1" />
         <div className="hero-glow-2" />
+
+        {/* Floating particles (CSS-only) */}
+        <div className="hero-particles" aria-hidden="true">
+          {Array.from({ length: 10 }, (_, i) => (
+            <span key={i} className={`hero-particle particle-${i + 1}`} />
+          ))}
+        </div>
 
         <div className="main-container min-h-dvh flex flex-col lg:flex-row lg:justify-center lg:items-center items-center text-center lg:text-left lg:py-12 pt-24 lg:pt-12 gap-10 lg:gap-24">
           {/* Left: Text Content */}
@@ -285,6 +292,11 @@ const Hero = () => {
             <div data-depth="2.2" className="absolute -bottom-4 -right-4 z-20 bg-black border border-white/10 rounded-2xl px-4 py-3 backdrop-blur-md will-change-transform">
               <p className="text-xs text-white/50 font-body">Tech Stack</p>
               <p className="text-sm font-heading font-semibold text-white">Go · JS · PHP</p>
+            </div>
+            {/* Floating speed badge (desktop only) */}
+            <div data-depth="1.8" className="hero-float-badge absolute top-1/2 -left-5 z-20 bg-black/80 border border-white/10 rounded-xl px-3 py-2 backdrop-blur-md will-change-transform hidden lg:flex flex-col items-center gap-1">
+              <span className="text-base">⚡</span>
+              <span className="text-[9px] text-white/40 font-heading uppercase tracking-wider">Fast</span>
             </div>
           </div>
         </div>
