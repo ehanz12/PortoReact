@@ -112,6 +112,11 @@ const Hero = () => {
             "-=0.4"
           );
 
+        if (window.__APP_READY__) {
+          introTl.current.play();
+          countUpStats();
+        }
+
         return () => introTl.current?.kill();
       },
     });

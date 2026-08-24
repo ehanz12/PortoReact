@@ -172,7 +172,6 @@
 
   /* ─── Hero photo border glow (animated spin) ─── */
   .hero-photo-border {
-    position: relative;
     border-radius: 24px;
     padding: 2px;
     z-index: 0;

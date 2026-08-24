@@ -43,6 +43,13 @@ const App = () => {
     }
   }, [reducedMotion]);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoaded(true);
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <>
       {!reducedMotion && <Preloader onComplete={() => setLoaded(true)} />}
