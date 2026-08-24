@@ -31,7 +31,7 @@ const CTA = () => {
                 <h4 className='max-w-6xl text-2xl lg:text-5xl text-center leading-tight'>Freelance Project, collaborations and Full-time opportunities. Let's get
                     acquainted
                 </h4>
-                <ButtonGradient text={"Book a Call"} link={""} />
+                <ButtonGradient text={"Book a Call"} link={"mailto:rhanssap@gmail.com"} />
             </div>
         </div>
     </>

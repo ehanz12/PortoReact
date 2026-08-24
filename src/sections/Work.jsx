@@ -23,6 +23,9 @@ const Work = () => {
       const projectWidth = projectRef.current.scrollWidth;
       const scrollDistance = projectWidth - window.innerWidth;
 
+      /* Kumpulkan gambar untuk parallax internal */
+      const images = projectRef.current.querySelectorAll(".work-card-img");
+
       gsap.to(projectRef.current, {
         x: -scrollDistance,
         ease: "none",
@@ -34,6 +37,13 @@ const Work = () => {
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            /* Gambar bergeser pelan berlawanan arah → efek kedalaman */
+            images.forEach((img, i) => {
+              const dir = i % 2 === 0 ? -1 : 1;
+              img.style.transform = `translateX(${self.progress * 12 * dir}%) scale(1.15)`;
+            });
+          },
         },
       });
     },
@@ -73,13 +83,16 @@ const Work = () => {
               <button
                 key={project.id}
                 onClick={() => setActiveProject(project)}
+                data-cursor="Lihat"
                 className="relative rounded-2xl min-w-60 lg:min-w-[24rem] h-64 lg:h-96 
                            overflow-hidden group cursor-pointer shrink-0"
               >
                 <img
                   src={project.image}
                   alt={project.name}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="work-card-img w-full h-full object-cover will-change-transform"
+                  loading="lazy"
+                  decoding="async"
                 />
 
                 <span
@@ -88,6 +101,9 @@ const Work = () => {
                 >
                   {project.name}
                 </span>
+
+                {/* Overlay hint saat hover */}
+                <span className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
               </button>
             ))}
           </div>

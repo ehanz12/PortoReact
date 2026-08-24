@@ -10,6 +10,7 @@ const  projects = [
     name: "Dashboard Pribadi",
     image: project1,
     link: "https://www.reihan.biz.id",
+    techStack: ["React", "Golang"],
     description: "Web Dashboard To-Do List (Fullstack) ini merupakan aplikasi berbasis web yang dikembangkan untuk membantu pengguna mengelola aktivitas harian secara terstruktur dan efisien. Aplikasi ini dibangun dengan arsitektur fullstack client-server, memadukan frontend React yang interaktif dengan backend Golang yang mengelola logika bisnis dan API secara andal."
   },
   {
@@ -17,6 +18,7 @@ const  projects = [
     name: "Management Perpustakaan",
     image: project2,
     link: "",
+    techStack: ["React", "Express.js", "MySQL"],
     description: "Web Perpustakaan: aplikasi fullstack berbasis web untuk mengelola data buku, anggota, dan transaksi peminjaman secara terpusat. Sistem ini dilengkapi dengan antarmuka frontend yang responsif untuk CRUD dan pencatatan peminjaman, serta backend yang kokoh untuk memastikan keamanan data, konsistensi transaksi, dan integrasi API yang mulus."
   },
   {
@@ -24,6 +26,7 @@ const  projects = [
     name: "Game Tictactoe",
     image: project3,
     link: "https://game-tictactoe-sigma.vercel.app/",
+    techStack: ["JavaScript", "HTML", "CSS"],
     description: "Ini game tictactoe biasa hanya untuk memlatih algoritma saja dan di web ini memiliki fitur rollback, lalu pemenang"
   },
   {
@@ -31,6 +34,7 @@ const  projects = [
     name: "Blogravel",
     image: project4,
     link: "",
+    techStack: ["Laravel", "React", "MySQL"],
     description: "Blogravel: platform blog fullstack berbasis web yang memungkinkan pengguna membuat dan mempublikasikan artikel secara terstruktur. Dilengkapi dengan tampilan frontend yang dinamis untuk pembaca dan panel admin, autentikasi pengguna, manajemen konten (CRUD), serta backend API Laravel yang aman, terstruktur, dan mudah dikembangkan."
   },
   {
@@ -38,6 +42,7 @@ const  projects = [
     name: "Website Capture The Flag",
     image: project5,
     link: "",
+    techStack: ["React", "Node.js", "MySQL"],
     description: "Website Capture The Flag (CTF): platform latihan keamanan siber fullstack untuk pengujian sistem secara legal. Aplikasi ini memadukan frontend dashboard interaktif (leaderboard, skor, dan submission) dengan backend RESTful API yang menangani pengelolaan challenge, validasi flag secara real-time, autentikasi aman, serta pencatatan aktivitas peserta secara terstruktur."
   },
 ]

@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { seededRandom } from "../lib/motion";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -54,6 +55,17 @@ const languageColors = {
   Python: "bg-green-500",
 };
 
+const heatmapLevels = [
+  "bg-zinc-900 border-zinc-950",                // 0 kontribusi
+  "bg-emerald-950 border-emerald-950/20",       // 1-3
+  "bg-emerald-800 border-emerald-900/20",       // 4-6
+  "bg-emerald-600 border-emerald-700/20",       // 7-9
+  "bg-emerald-400 border-emerald-500/20",       // 10+
+];
+
+const CACHE_KEY = "github_data_cache";
+const CACHE_TTL = 60 * 60 * 1000; // 1 jam
+
 const GithubContributions = () => {
   const [profile, setProfile] = useState(null);
   const [repos, setRepos] = useState([]);
@@ -62,23 +74,50 @@ const GithubContributions = () => {
 
   useEffect(() => {
     const fetchGithubData = async () => {
+      // Cek cache dulu
+      try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const { data, timestamp } = JSON.parse(cached);
+          if (Date.now() - timestamp < CACHE_TTL) {
+            setProfile(data.profile);
+            setRepos(data.repos);
+            setLoading(false);
+            return;
+          }
+        }
+        } catch {
+          // localStorage may be full or unavailable
+        }
+
       try {
         // Fetch User Profile
         const profileRes = await fetch("https://api.github.com/users/ehanz12");
+        let profileData = null;
         if (profileRes.ok) {
-          const profileData = await profileRes.json();
+          profileData = await profileRes.json();
           setProfile(profileData);
         }
 
         // Fetch User Repositories
         const reposRes = await fetch("https://api.github.com/users/ehanz12/repos?sort=updated&per_page=6");
+        let reposData = [];
         if (reposRes.ok) {
-          const reposData = await reposRes.json();
-          // Filter out forks if preferred
+          reposData = await reposRes.json();
           setRepos(reposData.slice(0, 4));
         } else {
           setRepos(fallbackRepos);
         }
+
+        // Simpan ke cache
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify({
+            data: { profile: profileData, repos: reposData.slice(0, 4) },
+            timestamp: Date.now()
+          }));
+      } catch {
+        // Cache parse failed, continue to fetch
+      }
       } catch (error) {
         console.error("Error fetching GitHub data:", error);
         setRepos(fallbackRepos);
@@ -88,6 +127,24 @@ const GithubContributions = () => {
     };
 
     fetchGithubData();
+  }, []);
+
+  /* Heatmap deterministik (seeded) — konsisten antar render */
+  const cells = useMemo(() => {
+    const rand = seededRandom(20260824);
+    return Array.from({ length: 126 }, () => {
+      const value = rand();
+      let levelIndex = 0;
+      if (value > 0.85) levelIndex = 4;
+      else if (value > 0.7) levelIndex = 3;
+      else if (value > 0.5) levelIndex = 2;
+      else if (value > 0.2) levelIndex = 1;
+
+      return {
+        level: levelIndex,
+        count: Math.floor(value * 12),
+      };
+    });
   }, []);
 
   useGSAP(() => {
@@ -115,39 +172,20 @@ const GithubContributions = () => {
         start: "top 80%",
       },
     });
+
+    // Heatmap cells: stagger fill-in
+    gsap.from(".heatmap-cell", {
+      scale: 0,
+      opacity: 0,
+      stagger: { each: 0.006, from: "start" },
+      duration: 0.4,
+      ease: "back.out(2)",
+      scrollTrigger: {
+        trigger: ".heatmap-box",
+        start: "top 85%",
+      },
+    });
   }, { scope: sectionRef });
-
-  // Generate random data for contribution heatmap simulation (for premium visual representation)
-  const renderContributionGrid = () => {
-    const grid = [];
-    const colorLevels = [
-      "bg-zinc-900 border-zinc-950",      // 0 commits
-      "bg-emerald-950 border-emerald-950/20",   // 1-3 commits
-      "bg-emerald-800 border-emerald-900/20",   // 4-6 commits
-      "bg-emerald-600 border-emerald-700/20",   // 7-9 commits
-      "bg-emerald-400 border-emerald-500/20",   // 10+ commits
-    ];
-
-    // Create 18 weeks * 7 days grid
-    for (let i = 0; i < 126; i++) {
-      // Weight randomizer towards lower numbers (darker greens/gray) to look natural
-      const rand = Math.random();
-      let levelIndex = 0;
-      if (rand > 0.85) levelIndex = 4;
-      else if (rand > 0.7) levelIndex = 3;
-      else if (rand > 0.5) levelIndex = 2;
-      else if (rand > 0.2) levelIndex = 1;
-
-      grid.push(
-        <div
-          key={i}
-          className={`w-3.5 h-3.5 rounded-sm ${colorLevels[levelIndex]} transition-all duration-300 hover:scale-130 hover:shadow-[0_0_8px_rgba(52,211,153,0.6)] cursor-pointer`}
-          title={`${Math.floor(rand * 12)} kontribusi`}
-        />
-      );
-    }
-    return grid;
-  };
 
   return (
     <section
@@ -188,6 +226,8 @@ const GithubContributions = () => {
                   src={profile?.avatar_url || "https://avatars.githubusercontent.com/u/161427503?v=4"}
                   alt={profile?.name || "Reihan Aditya"}
                   className="w-16 h-16 rounded-2xl object-cover border border-white/10 group-hover:border-indigo-400 transition-colors duration-300"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div>
                   <h4 className="font-heading font-bold text-lg text-white group-hover:text-indigo-400 transition-colors">
@@ -230,7 +270,7 @@ const GithubContributions = () => {
             </div>
 
             {/* Simulated Heatmap Box */}
-            <div className="bg-zinc-950/60 backdrop-blur-md border border-white/10 rounded-3xl p-6 hover:border-white/20 transition-all duration-300">
+            <div className="heatmap-box bg-zinc-950/60 backdrop-blur-md border border-white/10 rounded-3xl p-6 hover:border-white/20 transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xs font-heading font-semibold uppercase tracking-wider text-white/40">Grafik Kontribusi</span>
                 <span className="text-xs text-emerald-400 font-body flex items-center gap-1">
@@ -241,7 +281,13 @@ const GithubContributions = () => {
 
               {/* Contribution Grid */}
               <div className="flex flex-wrap gap-1 max-w-[280px] sm:max-w-none mx-auto justify-center">
-                {renderContributionGrid()}
+                {cells.map((cell, i) => (
+                  <div
+                    key={i}
+                    className={`heatmap-cell w-3.5 h-3.5 rounded-sm ${heatmapLevels[cell.level]} transition-all duration-300 hover:scale-130 hover:shadow-[0_0_8px_rgba(52,211,153,0.6)] cursor-pointer`}
+                    title={`${cell.count} kontribusi`}
+                  />
+                ))}
               </div>
 
               <div className="flex justify-between items-center mt-4 text-[10px] text-white/30 font-body">

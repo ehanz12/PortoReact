@@ -8,4 +8,14 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          gsap: ['gsap', '@gsap/react'],
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+        }
+      }
+    }
+  }
 })

@@ -58,7 +58,7 @@ const About = () => {
       },
     });
 
-    // Animate skill bars
+    // Animate skill bars + count-up persentase
     gsap.from(".skill-bar-fill", {
       scaleX: 0,
       transformOrigin: "left center",
@@ -69,6 +69,24 @@ const About = () => {
         trigger: ".skills-section",
         start: "top 80%",
       },
+    });
+
+    aboutRef.current.querySelectorAll(".skill-percent").forEach((el) => {
+      const target = parseInt(el.dataset.level, 10);
+      const obj = { value: 0 };
+
+      gsap.to(obj, {
+        value: target,
+        duration: 1.4,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".skills-section",
+          start: "top 80%",
+        },
+        onUpdate: () => {
+          el.textContent = `${Math.round(obj.value)}%`;
+        },
+      });
     });
 
     // Animate about cards
@@ -90,6 +108,14 @@ const About = () => {
     };
   }, { scope: aboutRef });
 
+  /* ── Spotlight mengikuti kursor pada info cards ── */
+  const handleSpotlight = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
+    card.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
+  };
+
   return (
     <div
       id="about"
@@ -109,6 +135,8 @@ const About = () => {
                   src={profilePhoto}
                   alt="Reihan Aditya Putra"
                   className="w-full h-full object-cover object-top"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               {/* Floating chip */}
@@ -137,9 +165,13 @@ const About = () => {
                 { label: "Jurusan", value: "RPL (XII RPL 2)" },
                 { label: "Email", value: "rhanssap@gmail.com" },
               ].map((item) => (
-                <div key={item.label} className="about-info-card bg-gray-50 border border-gray-100 rounded-2xl p-4">
-                  <p className="text-xs font-heading uppercase tracking-wider text-black/40 mb-1">{item.label}</p>
-                  <p className="font-heading font-semibold text-sm text-black break-words">{item.value}</p>
+                <div
+                  key={item.label}
+                  onMouseMove={handleSpotlight}
+                  className="about-info-card spotlight-card bg-gray-50 border border-gray-100 rounded-2xl p-4 transition-colors duration-300 hover:border-purple-200"
+                >
+                  <p className="text-xs font-heading uppercase tracking-wider text-black/40 mb-1 relative z-10">{item.label}</p>
+                  <p className="font-heading font-semibold text-sm text-black break-words relative z-10">{item.value}</p>
                 </div>
               ))}
             </div>
@@ -159,7 +191,9 @@ const About = () => {
               <div key={skill.name}>
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-heading font-semibold text-black">{skill.name}</span>
-                  <span className="text-sm font-body text-black/40">{skill.level}%</span>
+                  <span className="skill-percent text-sm font-body text-black/40" data-level={skill.level}>
+                    0%
+                  </span>
                 </div>
                 <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                   <div

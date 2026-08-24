@@ -1,25 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-import sertifikat1 from "../assets/images/sertifikat1.webp";
-import sertifikat2 from "../assets/images/sertifikat2.webp";
-import sertifikat3 from "../assets/images/sertifikat3.webp";
-import sertifikat4 from "../assets/images/sertifikat4.webp";
-import sertifikat5 from "../assets/images/sertifikat5.webp";
-import sertifikat6 from "../assets/images/sertifikat6.webp";
-import sertifikat7 from "../assets/images/sertifikat7.webp";
-import sertifikat8 from "../assets/images/sertifikat8.webp";
-import sertifikat9 from "../assets/images/sertifikat9.webp";
-import sertifikat10 from "../assets/images/sertifikat10.webp";
+import { getLenis } from "../lib/lenis";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+const certImageModules = import.meta.glob("../assets/images/sertifikat*.webp", { eager: true });
+const certImages = Object.keys(certImageModules)
+  .sort()
+  .map((key) => certImageModules[key].default);
 
 const certificatesData = [
   {
     id: 1,
-    image: sertifikat1,
+    image: certImages[0],
     title: "Google Cloud Roadshows",
     issuer: "Google Developer Group Bogor",
     year: "2025",
@@ -27,7 +22,7 @@ const certificatesData = [
   },
   {
     id: 2,
-    image: sertifikat2,
+    image: certImages[1],
     title: "From Vision to Version 1.0",
     issuer: "CodeLamp Indonesia",
     year: "2025",
@@ -35,7 +30,7 @@ const certificatesData = [
   },
   {
     id: 3,
-    image: sertifikat3,
+    image: certImages[2],
     title: "Google I/O Extended Bogor",
     issuer: "GDG Bogor & Women Techmakers",
     year: "2025",
@@ -43,7 +38,7 @@ const certificatesData = [
   },
   {
     id: 4,
-    image: sertifikat4,
+    image: certImages[3],
     title: "Game Design: From Hobby to Hook",
     issuer: "CodeLamp Indonesia",
     year: "2025",
@@ -51,7 +46,7 @@ const certificatesData = [
   },
   {
     id: 5,
-    image: sertifikat5,
+    image: certImages[4],
     title: "Nasional Basic Public Speaking",
     issuer: "Galeria Potensi",
     year: "2026",
@@ -59,7 +54,7 @@ const certificatesData = [
   },
   {
     id: 6,
-    image: sertifikat6,
+    image: certImages[5],
     title: "Introduction to Capture The Flag",
     issuer: "ID-NetWorkers",
     year: "2025",
@@ -67,7 +62,7 @@ const certificatesData = [
   },
   {
     id: 7,
-    image: sertifikat7,
+    image: certImages[6],
     title: "Strategi, Menciptakan Komunikasi Yang Nyaman",
     issuer: "Galeria Potensi",
     year: "2026",
@@ -75,7 +70,7 @@ const certificatesData = [
   },
   {
     id: 8,
-    image: sertifikat8,
+    image: certImages[7],
     title: "Festival Lomba Kompetisi Siswa Tingkat SMK Kabupaten Bogor",
     issuer: "Disdik Jabar",
     year: "2026",
@@ -83,7 +78,7 @@ const certificatesData = [
   },
   {
     id: 9,
-    image: sertifikat9,
+    image: certImages[8],
     title: "Python Developer",
     issuer: "Sololearn",
     year: "2025",
@@ -91,8 +86,8 @@ const certificatesData = [
   },
   {
     id: 10,
-    image: sertifikat10,
-    tilte: "Vibe Koding",
+    image: certImages[9],
+    title: "Vibe Koding",
     issuer: "Sololearn",
     year: "2025",
     type: "Course Certificate"
@@ -102,6 +97,39 @@ const certificatesData = [
 const Certificates = () => {
   const sectionRef = useRef(null);
   const [activeCert, setActiveCert] = useState(null);
+
+  /* ── Lock scroll saat lightbox terbuka (Lenis-aware) ── */
+  useEffect(() => {
+    if (!activeCert) return;
+    const lenis = getLenis();
+    lenis?.stop();
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      lenis?.start();
+      document.body.style.overflow = "";
+    };
+  }, [activeCert]);
+
+  /* ── Keyboard: ESC tutup, ←/→ navigasi ── */
+  const lightboxOpen = activeCert !== null;
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+
+    const onKey = (e) => {
+      if (e.key === "Escape") setActiveCert(null);
+      if (e.key === "ArrowRight")
+        setActiveCert((i) => (i + 1) % certificatesData.length);
+      if (e.key === "ArrowLeft")
+        setActiveCert((i) =>
+          i === 0 ? certificatesData.length - 1 : i - 1
+        );
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightboxOpen]);
 
   useGSAP(() => {
     gsap.from(".cert-title-anim", {
@@ -148,11 +176,12 @@ const Certificates = () => {
 
         {/* Certificates Grid */}
         <div className="cert-grid main-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
-          {certificatesData.map((cert) => (
+          {certificatesData.map((cert, index) => (
             <button
               key={cert.id}
               className="cert-card group relative rounded-2xl overflow-hidden cursor-pointer text-left"
-              onClick={() => setActiveCert(cert)}
+              onClick={() => setActiveCert(index)}
+              data-cursor="Lihat"
             >
               {/* Image */}
               <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
@@ -160,6 +189,8 @@ const Certificates = () => {
                   src={cert.image}
                   alt={cert.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
                 />
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
@@ -188,13 +219,16 @@ const Certificates = () => {
       </section>
 
       {/* Lightbox Modal */}
-      {activeCert && (
+      {activeCert !== null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in"
           onClick={() => setActiveCert(null)}
+          role="dialog"
+          aria-modal="true"
         >
           <div
-            className="relative max-w-4xl w-full"
+            key={activeCert}
+            className="relative max-w-4xl w-full animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
@@ -205,26 +239,57 @@ const Certificates = () => {
               Tutup <span className="text-lg">✕</span>
             </button>
 
+            {/* Prev / Next */}
+            <button
+              onClick={() =>
+                setActiveCert((i) =>
+                  i === 0 ? certificatesData.length - 1 : i - 1
+                )
+              }
+              aria-label="Sertifikat sebelumnya"
+              className="absolute top-1/2 -left-4 lg:-left-16 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 text-white flex items-center justify-center transition-all duration-300 hover:scale-110"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={() => setActiveCert((i) => (i + 1) % certificatesData.length)}
+              aria-label="Sertifikat berikutnya"
+              className="absolute top-1/2 -right-4 lg:-right-16 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 text-white flex items-center justify-center transition-all duration-300 hover:scale-110"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
             {/* Certificate image */}
             <div className="rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src={activeCert.image}
-                alt={activeCert.title}
+                src={certificatesData[activeCert].image}
+                alt={certificatesData[activeCert].title}
                 className="w-full h-auto"
+                loading="lazy"
+                decoding="async"
               />
             </div>
 
             {/* Certificate info */}
             <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
               <div>
-                <p className="text-white/40 text-sm font-body">{activeCert.type}</p>
-                <h3 className="text-white font-heading font-bold text-xl">{activeCert.title}</h3>
+                <p className="text-white/40 text-sm font-body">{certificatesData[activeCert].type}</p>
+                <h3 className="text-white font-heading font-bold text-xl">{certificatesData[activeCert].title}</h3>
               </div>
               <div className="text-right">
-                <p className="text-white/40 text-sm">{activeCert.issuer}</p>
-                <p className="text-white font-heading font-semibold">{activeCert.year}</p>
+                <p className="text-white/40 text-sm">{certificatesData[activeCert].issuer}</p>
+                <p className="text-white font-heading font-semibold">{certificatesData[activeCert].year}</p>
               </div>
             </div>
+
+            {/* Counter */}
+            <p className="text-center text-white/30 text-sm mt-3 font-heading">
+              {activeCert + 1} / {certificatesData.length}
+            </p>
           </div>
         </div>
       )}
