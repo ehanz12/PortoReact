@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { signalAppReady } from "../lib/motion";
@@ -9,6 +9,16 @@ const Preloader = ({ onComplete }) => {
   const barRef = useRef(null);
   const logoRef = useRef(null);
   const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    const fallback = setTimeout(() => {
+      if (!done) {
+        signalAppReady();
+        onComplete?.();
+      }
+    }, 6000);
+    return () => clearTimeout(fallback);
+  }, [done, onComplete]);
 
   useGSAP(() => {
     const counter = { value: 0 };

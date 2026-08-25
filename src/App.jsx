@@ -9,7 +9,7 @@ import ScrollProgress from "./components/ScrollProgress";
 import BackToTop from "./components/BackToTop";
 import PageTransition from "./components/PageTransition";
 import { initLenis } from "./lib/lenis";
-import { prefersReducedMotion } from "./lib/motion";
+import { prefersReducedMotion, signalAppReady } from "./lib/motion";
 
 const Projects = React.lazy(() => import("./pages/Projects"));
 
@@ -40,6 +40,12 @@ const App = () => {
   useEffect(() => {
     if (!reducedMotion) {
       initLenis();
+    }
+  }, [reducedMotion]);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      signalAppReady();
     }
   }, [reducedMotion]);
 

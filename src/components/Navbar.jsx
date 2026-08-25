@@ -35,7 +35,12 @@ const Navbar = () => {
         { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
       );
     });
-    return () => off();
+    const safety = setTimeout(() => {
+      if (navRef.current && getComputedStyle(navRef.current).opacity === "0") {
+        gsap.to(navRef.current, { opacity: 1, y: 0, duration: 0.5 });
+      }
+    }, 4000);
+    return () => { off(); clearTimeout(safety); };
   }, []);
 
   /* ── Timeline menu fullscreen (stagger link + nomor) ── */

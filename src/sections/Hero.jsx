@@ -115,6 +115,18 @@ const Hero = () => {
         if (window.__APP_READY__) {
           introTl.current.play();
           countUpStats();
+        } else {
+          const safety = setTimeout(() => {
+            if (!window.__APP_READY__) {
+              introTl.current?.play();
+              countUpStats();
+            }
+          }, 3000);
+          const origReturn = () => {
+            clearTimeout(safety);
+            introTl.current?.kill();
+          };
+          return origReturn;
         }
 
         return () => introTl.current?.kill();
