@@ -166,12 +166,6 @@
     background: linear-gradient(135deg, #FF4D6D, #7B2FF7, #2F86F7);
   }
 
-  /* ─── About photo background ─── */
-  .about-photo-bg {
-    background: linear-gradient(135deg, #f0f0ff 0%, #e8e0ff 50%, #f0f0ff 100%);
-    z-index: 0;
-  }
-
   /* ─── Skill bar gradient ─── */
   .skill-bar-gradient {
     background: linear-gradient(90deg, #FF4D6D 0%, #BD3EB2 40%, #7B2FF7 70%, #2F86F7 100%);

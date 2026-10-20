@@ -137,26 +137,37 @@ const About = () => {
       <div className="main-container py-20 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Left – Photo */}
-          <div className="about-photo relative max-lg:order-2 overflow-hidden">
-            <div className="relative">
-              {/* Decorative blob behind photo */}
-              <div className="absolute -inset-4 rounded-[40px] about-photo-bg" />
-              <div className="relative rounded-[32px] overflow-hidden aspect-[4/5]">
-                <img
-                  src={profilePhoto}
-                  alt="Reihan Aditya Putra"
-                  className="w-full h-full object-cover object-top"
-                  loading="lazy"
-                  decoding="async"
-                  width="640"
-                  height="800"
-                />
-              </div>
-              {/* Floating chip */}
-              <div className="absolute bottom-6 -right-4 sm:-right-6 bg-black text-white rounded-2xl px-4 sm:px-5 py-3 sm:py-4 shadow-xl">
-                <p className="text-[10px] sm:text-xs text-white/50 font-body">Kelas</p>
-                <p className="text-xs sm:text-sm font-heading font-bold">XII RPL 2</p>
-              </div>
+          <div className="about-photo relative max-lg:order-2">
+            {/* Decorative ring */}
+            <div className="absolute inset-0 rounded-3xl hero-photo-border" />
+            {/* Floating label top-left */}
+            <div className="absolute -top-4 -left-4 z-20 bg-black border border-white/10 rounded-2xl px-4 py-3 backdrop-blur-md">
+              <p className="text-xs text-white/50 font-body">Spesialisasi</p>
+              <p className="text-sm font-heading font-semibold text-white">Fullstack Dev</p>
+            </div>
+            {/* Photo */}
+            <div className="relative overflow-hidden rounded-3xl aspect-[3/4]">
+              <img
+                src={profilePhoto}
+                alt="Reihan Aditya Putra"
+                className="w-full h-full object-cover object-top"
+                loading="lazy"
+                decoding="async"
+                width="640"
+                height="853"
+              />
+              {/* Gradient overlay bottom */}
+              <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent" />
+            </div>
+            {/* Floating label bottom-right */}
+            <div className="absolute -bottom-4 -right-4 z-20 bg-black border border-white/10 rounded-2xl px-4 py-3 backdrop-blur-md">
+              <p className="text-xs text-white/50 font-body">Tech Stack</p>
+              <p className="text-sm font-heading font-semibold text-white">Go · JS · PHP</p>
+            </div>
+            {/* Floating speed badge (desktop only) */}
+            <div className="hero-float-badge absolute top-1/2 -left-5 z-20 bg-black/80 border border-white/10 rounded-xl px-3 py-2 backdrop-blur-md hidden lg:flex flex-col items-center gap-1">
+              <span className="text-base">⚡</span>
+              <span className="text-[9px] text-white/40 font-heading uppercase tracking-wider">Fast</span>
             </div>
           </div>
 
