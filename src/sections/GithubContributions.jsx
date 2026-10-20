@@ -73,6 +73,7 @@ const GithubContributions = () => {
   const sectionRef = useRef(null);
 
   useEffect(() => {
+    const controller = new AbortController();
     const fetchGithubData = async () => {
       // Cek cache dulu
       try {
@@ -92,7 +93,7 @@ const GithubContributions = () => {
 
       try {
         // Fetch User Profile
-        const profileRes = await fetch("https://api.github.com/users/ehanz12");
+        const profileRes = await fetch("https://api.github.com/users/ehanz12", { signal: controller.signal });
         let profileData = null;
         if (profileRes.ok) {
           profileData = await profileRes.json();
@@ -100,7 +101,7 @@ const GithubContributions = () => {
         }
 
         // Fetch User Repositories
-        const reposRes = await fetch("https://api.github.com/users/ehanz12/repos?sort=updated&per_page=6");
+        const reposRes = await fetch("https://api.github.com/users/ehanz12/repos?sort=updated&per_page=6", { signal: controller.signal });
         let reposData = [];
         if (reposRes.ok) {
           reposData = await reposRes.json();
@@ -119,6 +120,7 @@ const GithubContributions = () => {
         // Cache parse failed, continue to fetch
       }
       } catch (error) {
+        if (error?.name === "AbortError") return;
         console.error("Error fetching GitHub data:", error);
         setRepos(fallbackRepos);
       } finally {
@@ -127,6 +129,7 @@ const GithubContributions = () => {
     };
 
     fetchGithubData();
+    return () => controller.abort();
   }, []);
 
   /* Heatmap deterministik (seeded) — konsisten antar render */
@@ -157,6 +160,7 @@ const GithubContributions = () => {
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "top 75%",
+        once: true,
       },
     });
 
@@ -170,19 +174,20 @@ const GithubContributions = () => {
       scrollTrigger: {
         trigger: ".github-grid",
         start: "top 80%",
+        once: true,
       },
     });
 
-    // Heatmap cells: stagger fill-in
-    gsap.from(".heatmap-cell", {
-      scale: 0,
+    // Heatmap: fade sederhana sekali saja (ganti 126 tween back.out yang berat)
+    gsap.from(".heatmap-box", {
       opacity: 0,
-      stagger: { each: 0.006, from: "start" },
-      duration: 0.4,
-      ease: "back.out(2)",
+      y: 24,
+      duration: 0.6,
+      ease: "power2.out",
       scrollTrigger: {
         trigger: ".heatmap-box",
         start: "top 85%",
+        once: true,
       },
     });
   }, { scope: sectionRef });
@@ -193,9 +198,9 @@ const GithubContributions = () => {
       id="github"
       className="relative z-20 bg-black text-white py-24 lg:py-40 overflow-hidden border-t border-white/5"
     >
-      {/* Decorative gradients */}
-      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[40vw] h-[40vw] rounded-full bg-indigo-900/10 blur-[140px] pointer-events-none -z-10" />
-      <div className="absolute bottom-0 right-0 w-[40vw] h-[40vw] rounded-full bg-emerald-900/10 blur-[140px] pointer-events-none -z-10" />
+      {/* Decorative gradients — blur dikecilkan agar hemat GPU */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[40vw] h-[40vw] rounded-full bg-indigo-900/10 blur-[80px] pointer-events-none -z-10" />
+      <div className="absolute bottom-0 right-0 w-[40vw] h-[40vw] rounded-full bg-emerald-900/10 blur-[80px] pointer-events-none -z-10" />
 
       <div className="main-container">
         {/* Header */}
@@ -228,6 +233,8 @@ const GithubContributions = () => {
                   className="w-16 h-16 rounded-2xl object-cover border border-white/10 group-hover:border-indigo-400 transition-colors duration-300"
                   loading="lazy"
                   decoding="async"
+                  width="64"
+                  height="64"
                 />
                 <div>
                   <h4 className="font-heading font-bold text-lg text-white group-hover:text-indigo-400 transition-colors">

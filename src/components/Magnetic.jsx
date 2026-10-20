@@ -8,6 +8,17 @@ import { isFinePointer, prefersReducedMotion } from "../lib/motion";
  */
 const Magnetic = ({ children, strength = 0.35, className = "" }) => {
   const ref = useRef(null);
+  const settersRef = useRef(null);
+
+  const ensureSetters = (el) => {
+    if (!settersRef.current) {
+      settersRef.current = {
+        x: gsap.quickTo(el, "x", { duration: 0.4, ease: "power3.out" }),
+        y: gsap.quickTo(el, "y", { duration: 0.4, ease: "power3.out" }),
+      };
+    }
+    return settersRef.current;
+  };
 
   const handleMove = (e) => {
     if (!isFinePointer() || prefersReducedMotion()) return;
@@ -18,22 +29,20 @@ const Magnetic = ({ children, strength = 0.35, className = "" }) => {
     const relX = e.clientX - (rect.left + rect.width / 2);
     const relY = e.clientY - (rect.top + rect.height / 2);
 
-    gsap.to(el, {
-      x: relX * strength,
-      y: relY * strength,
-      duration: 0.4,
-      ease: "power3.out",
-    });
+    const { x, y } = ensureSetters(el);
+    x(relX * strength);
+    y(relY * strength);
   };
 
   const handleLeave = () => {
-    if (!ref.current) return;
-    gsap.to(ref.current, {
-      x: 0,
-      y: 0,
-      duration: 0.7,
-      ease: "elastic.out(1, 0.4)",
-    });
+    const el = ref.current;
+    if (!el) return;
+    if (settersRef.current) {
+      settersRef.current.x(0);
+      settersRef.current.y(0);
+    } else {
+      gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: "power3.out", overwrite: "auto" });
+    }
   };
 
   return (
@@ -41,7 +50,7 @@ const Magnetic = ({ children, strength = 0.35, className = "" }) => {
       ref={ref}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      className={`inline-block will-change-transform ${className}`}
+      className={`inline-block ${className}`}
     >
       {children}
     </div>

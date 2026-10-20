@@ -23,11 +23,15 @@ const Projects = () => {
               className="group block overflow-hidden rounded-2xl text-left cursor-pointer"
             >
               {/* Image */}
-              <div className="relative h-64 lg:h-80 overflow-hidden">
+              <div className="relative h-64 lg:h-80 overflow-hidden bg-gray-100">
                 <img
                   src={project.image}
                   alt={project.name}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
+                  width="640"
+                  height="512"
                 />
               </div>
 

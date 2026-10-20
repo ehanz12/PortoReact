@@ -140,6 +140,7 @@ const Certificates = () => {
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "top 75%",
+        once: true,
       },
     });
 
@@ -152,6 +153,7 @@ const Certificates = () => {
       scrollTrigger: {
         trigger: ".cert-grid",
         start: "top 80%",
+        once: true,
       },
     });
   }, { scope: sectionRef });
@@ -175,7 +177,7 @@ const Certificates = () => {
         </div>
 
         {/* Certificates Grid */}
-        <div className="cert-grid main-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        <div className="cert-grid main-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6" style={{ contentVisibility: "auto", containIntrinsicSize: "auto 600px" }}>
           {certificatesData.map((cert, index) => (
             <button
               key={cert.id}
@@ -191,10 +193,12 @@ const Certificates = () => {
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                   decoding="async"
+                  width="480"
+                  height="360"
                 />
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white font-heading text-sm uppercase tracking-widest bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-5 py-2">
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white font-heading text-sm uppercase tracking-widest bg-white/20 border border-white/30 rounded-full px-5 py-2">
                     Lihat Detail
                   </span>
                 </div>
@@ -269,8 +273,9 @@ const Certificates = () => {
                 src={certificatesData[activeCert].image}
                 alt={certificatesData[activeCert].title}
                 className="w-full h-auto"
-                loading="lazy"
+                loading="eager"
                 decoding="async"
+                fetchPriority="high"
               />
             </div>
 

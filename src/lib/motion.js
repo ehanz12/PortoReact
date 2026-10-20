@@ -1,10 +1,37 @@
-export const prefersReducedMotion = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let _reducedMotion = null;
+let _finePointer = null;
 
-export const isFinePointer = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(pointer: fine)").matches;
+export const prefersReducedMotion = () => {
+  if (_reducedMotion !== null) return _reducedMotion;
+  _reducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return _reducedMotion;
+};
+
+export const isFinePointer = () => {
+  if (_finePointer !== null) return _finePointer;
+  _finePointer =
+    typeof window !== "undefined" &&
+    window.matchMedia("(pointer: fine)").matches &&
+    window.innerWidth >= 1024;
+  return _finePointer;
+};
+
+/* Reset cache saat resize lintas breakpoint (jarang terjadi) */
+if (typeof window !== "undefined") {
+  let _rzT = null;
+  window.addEventListener(
+    "resize",
+    () => {
+      clearTimeout(_rzT);
+      _rzT = setTimeout(() => {
+        _finePointer = null;
+      }, 500);
+    },
+    { passive: true }
+  );
+}
 
 const READY_EVENT = "app:ready";
 

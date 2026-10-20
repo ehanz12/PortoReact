@@ -82,11 +82,23 @@ const Navbar = () => {
   useEffect(() => {
     let lastY = window.scrollY;
     let ticking = false;
+    let lastScrolled = false;
+    let lastHidden = false;
 
     const update = () => {
       const y = window.scrollY;
-      setScrolled(y > 50);
-      if (!menuOpen) setHidden(y > lastY && y > 140);
+      const nextScrolled = y > 50;
+      if (nextScrolled !== lastScrolled) {
+        lastScrolled = nextScrolled;
+        setScrolled(nextScrolled);
+      }
+      if (!menuOpen) {
+        const nextHidden = y > lastY && y > 140;
+        if (nextHidden !== lastHidden) {
+          lastHidden = nextHidden;
+          setHidden(nextHidden);
+        }
+      }
       lastY = y;
       ticking = false;
     };
@@ -140,7 +152,7 @@ const Navbar = () => {
       >
         <div className="main-container py-6 flex justify-between items-center">
           <Link to="/" aria-label="Beranda">
-            <img src={Logo} alt="RH Logo" className="h-10 w-auto" />
+            <img src={Logo} alt="RH Logo" className="h-10 w-auto" width="40" height="40" decoding="async" />
           </Link>
 
           <button

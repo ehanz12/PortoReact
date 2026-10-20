@@ -43,6 +43,7 @@ const About = () => {
         start: "top 80%",
         end: "center center",
         scrub: 0.8,
+        once: false,
       },
     });
 
@@ -55,6 +56,7 @@ const About = () => {
       scrollTrigger: {
         trigger: aboutRef.current,
         start: "top 75%",
+        once: true,
       },
     });
 
@@ -68,6 +70,7 @@ const About = () => {
       scrollTrigger: {
         trigger: ".skills-section",
         start: "top 80%",
+        once: true,
       },
     });
 
@@ -99,6 +102,7 @@ const About = () => {
       scrollTrigger: {
         trigger: ".about-info-grid",
         start: "top 85%",
+        once: true,
       },
     });
 
@@ -108,12 +112,19 @@ const About = () => {
     };
   }, { scope: aboutRef });
 
-  /* ── Spotlight mengikuti kursor pada info cards ── */
+  /* ── Spotlight mengikuti kursor pada info cards (rAF-throttle) ── */
+  const spotlightRaf = useRef(0);
   const handleSpotlight = (e) => {
     const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    card.style.setProperty("--spot-x", `${e.clientX - rect.left}px`);
-    card.style.setProperty("--spot-y", `${e.clientY - rect.top}px`);
+    const cx = e.clientX;
+    const cy = e.clientY;
+    if (spotlightRaf.current) return;
+    spotlightRaf.current = requestAnimationFrame(() => {
+      spotlightRaf.current = 0;
+      const rect = card.getBoundingClientRect();
+      card.style.setProperty("--spot-x", `${cx - rect.left}px`);
+      card.style.setProperty("--spot-y", `${cy - rect.top}px`);
+    });
   };
 
   return (
@@ -137,6 +148,8 @@ const About = () => {
                   className="w-full h-full object-cover object-top"
                   loading="lazy"
                   decoding="async"
+                  width="640"
+                  height="800"
                 />
               </div>
               {/* Floating chip */}

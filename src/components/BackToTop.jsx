@@ -11,13 +11,18 @@ const BackToTop = () => {
 
   useEffect(() => {
     let ticking = false;
+    let lastVisible = false;
 
     const update = () => {
       const scrollY = window.scrollY;
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const progress = max > 0 ? Math.min(scrollY / max, 1) : 0;
 
-      setVisible(scrollY > SHOW_AFTER);
+      const nextVisible = scrollY > SHOW_AFTER;
+      if (nextVisible !== lastVisible) {
+        lastVisible = nextVisible;
+        setVisible(nextVisible);
+      }
 
       if (circleRef.current) {
         circleRef.current.style.strokeDashoffset =

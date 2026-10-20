@@ -32,12 +32,17 @@ const Marquee = () => {
     if (!isFinePointer()) return;
 
     let velocity = 0;
+    let inView = true;
 
-    ScrollTrigger.create({
-      start: 0,
-      end: "max",
+    const st = ScrollTrigger.create({
+      trigger: row1Ref.current?.parentElement,
+      start: "top bottom",
+      end: "bottom top",
       onUpdate: (self) => {
         velocity = self.getVelocity();
+      },
+      onToggle: (self) => {
+        inView = self.isActive;
       },
     });
 
@@ -49,6 +54,10 @@ const Marquee = () => {
     let pos2 = 0;
 
     const tick = () => {
+      if (!inView || document.hidden) {
+        velocity *= 0.9;
+        return;
+      }
       const boost = gsap.utils.clamp(-5, 5, velocity / 900);
       velocity *= 0.95;
 
@@ -64,7 +73,10 @@ const Marquee = () => {
     };
 
     gsap.ticker.add(tick);
-    return () => gsap.ticker.remove(tick);
+    return () => {
+      gsap.ticker.remove(tick);
+      st?.kill();
+    };
   }, []);
 
   // Mobile uses CSS animation, desktop uses GSAP ticker

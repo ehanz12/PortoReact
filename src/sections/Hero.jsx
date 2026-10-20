@@ -14,6 +14,7 @@ const ROLES = ["Developer", "Engineer", "Architect"];
 const SCRAMBLE_CHARS = "!<>-_\\/[]{}=+*^?#01";
 
 const scrambleTo = (el, targetText, duration = 700) => {
+  if (el._scrambleRaf) cancelAnimationFrame(el._scrambleRaf);
   const startTime = performance.now();
 
   const step = (now) => {
@@ -34,11 +35,14 @@ const scrambleTo = (el, targetText, duration = 700) => {
 
     el.textContent = output;
 
-    if (progress < 1) requestAnimationFrame(step);
-    else el.textContent = targetText;
+    if (progress < 1) el._scrambleRaf = requestAnimationFrame(step);
+    else {
+      el.textContent = targetText;
+      el._scrambleRaf = null;
+    }
   };
 
-  requestAnimationFrame(step);
+  el._scrambleRaf = requestAnimationFrame(step);
 };
 
 const Hero = () => {
@@ -133,15 +137,19 @@ const Hero = () => {
       },
     });
 
-    /* Pin hero selama scroll — desktop only */
+    /* Pin hero dihapus — penyebab jank + LCP tertahan di desktop.
+       Ganti fade-out ringan tanpa pin. */
     if (window.innerWidth >= 1024) {
-      ScrollTrigger.create({
-        trigger: heroRef.current,
-        start: "top top",
-        end: "bottom top",
-        pin: true,
-        pinSpacing: true,
-        scrub: 1,
+      gsap.to(heroRef.current, {
+        opacity: 0.35,
+        y: -60,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1,
+        },
       });
     }
 
@@ -165,7 +173,10 @@ const Hero = () => {
       scrambleTo(roleRef.current, ROLES[index]);
     }, 3200);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (roleRef.current?._scrambleRaf) cancelAnimationFrame(roleRef.current._scrambleRaf);
+    };
   }, []);
 
   /* ── Mouse parallax pada foto & badge ── */
@@ -197,14 +208,14 @@ const Hero = () => {
 
   return (
     <>
-      <div ref={heroRef} className="relative z-10 overflow-hidden will-change-transform">
+      <div ref={heroRef} className="relative z-10 overflow-hidden">
         {/* Background decorative elements */}
         <div className="hero-glow-1" />
         <div className="hero-glow-2" />
 
-        {/* Floating particles (CSS-only) */}
+        {/* Floating particles (CSS-only, dikurangi 10→6) */}
         <div className="hero-particles" aria-hidden="true">
-          {Array.from({ length: 10 }, (_, i) => (
+          {Array.from({ length: 6 }, (_, i) => (
             <span key={i} className={`hero-particle particle-${i + 1}`} />
           ))}
         </div>
@@ -295,12 +306,15 @@ const Hero = () => {
               <p className="text-sm font-heading font-semibold text-white">Fullstack Dev</p>
             </div>
             {/* Photo */}
-            <div data-depth="0.5" className="relative overflow-hidden rounded-3xl aspect-[3/4] will-change-transform">
+            <div data-depth="0.5" className="relative overflow-hidden rounded-3xl aspect-[3/4]">
               <img
                 src={profilePhoto}
                 alt="Reihan Aditya Putra"
                 className="w-full h-full object-cover object-top"
                 fetchPriority="high"
+                decoding="async"
+                width="640"
+                height="853"
               />
               {/* Gradient overlay bottom */}
               <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent" />

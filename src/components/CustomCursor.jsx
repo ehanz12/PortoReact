@@ -24,6 +24,7 @@ const CustomCursor = () => {
     let rafId;
     let isIdle = false;
     let idleTimeout = null;
+    let pendingDot = false;
 
     const loop = () => {
       if (isIdle) return;
@@ -62,12 +63,21 @@ const CustomCursor = () => {
       startLoop();
       scheduleIdle();
 
-      dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+      // Throttle DOM write via rAF flag agar tidak setiap mousemove mentah
+      if (!pendingDot) {
+        pendingDot = true;
+        requestAnimationFrame(() => {
+          dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+          pendingDot = false;
+        });
+      }
     };
 
     const onOver = (e) => {
-      const labelTarget = e.target.closest(`[${LABEL_ATTR}]`);
-      const hoverTarget = e.target.closest(HOVER_SELECTOR);
+      const t = e.target;
+      if (!(t instanceof Element)) return;
+      const labelTarget = t.closest(`[${LABEL_ATTR}]`);
+      const hoverTarget = t.closest(HOVER_SELECTOR);
 
       if (labelTarget) {
         ring.classList.add("is-label");
@@ -92,17 +102,24 @@ const CustomCursor = () => {
     };
 
     const onText = (e) => {
+      const t = e.target;
+      if (!(t instanceof Element)) return;
       /* Perkecil dot saat hover teks biasa */
-      if (!e.target.closest(HOVER_SELECTOR)) {
+      if (!t.closest(HOVER_SELECTOR)) {
         dot.style.scale = "2.2";
       } else {
         dot.style.scale = "1";
       }
     };
 
+    // Satu listener mouseover saja (gabung onOver + onText)
+    const onHover = (e) => {
+      onOver(e);
+      onText(e);
+    };
+
     window.addEventListener("mousemove", onMove, { passive: true });
-    document.addEventListener("mouseover", onOver);
-    document.addEventListener("mouseover", onText);
+    document.addEventListener("mouseover", onHover, { passive: true });
     document.documentElement.addEventListener("mouseleave", onLeave);
     rafId = requestAnimationFrame(loop);
 
@@ -110,8 +127,7 @@ const CustomCursor = () => {
       clearTimeout(idleTimeout);
       cancelAnimationFrame(rafId);
       window.removeEventListener("mousemove", onMove);
-      document.removeEventListener("mouseover", onOver);
-      document.removeEventListener("mouseover", onText);
+      document.removeEventListener("mouseover", onHover);
       document.documentElement.removeEventListener("mouseleave", onLeave);
     };
   }, [enabled]);

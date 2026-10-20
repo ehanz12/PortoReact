@@ -21,10 +21,8 @@ const Work = () => {
       if (!projectRef.current || !workRef.current) return;
 
       const projectWidth = projectRef.current.scrollWidth;
-      const scrollDistance = projectWidth - window.innerWidth;
-
-      /* Kumpulkan gambar untuk parallax internal */
-      const images = projectRef.current.querySelectorAll(".work-card-img");
+      const scrollDistance = Math.max(projectWidth - window.innerWidth, 0);
+      if (scrollDistance <= 0) return;
 
       gsap.to(projectRef.current, {
         x: -scrollDistance,
@@ -37,13 +35,6 @@ const Work = () => {
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            /* Gambar bergeser pelan berlawanan arah → efek kedalaman */
-            images.forEach((img, i) => {
-              const dir = i % 2 === 0 ? -1 : 1;
-              img.style.transform = `translateX(${self.progress * 12 * dir}%) scale(1.15)`;
-            });
-          },
         },
       });
     },
@@ -90,9 +81,11 @@ const Work = () => {
                 <img
                   src={project.image}
                   alt={project.name}
-                  className="work-card-img w-full h-full object-cover will-change-transform"
+                  className="work-card-img w-full h-full object-cover"
                   loading="lazy"
                   decoding="async"
+                  width="640"
+                  height="640"
                 />
 
                 <span

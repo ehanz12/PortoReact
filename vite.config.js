@@ -9,10 +9,13 @@ export default defineConfig({
     tailwindcss()
   ],
   build: {
+    assetsInlineLimit: 4096,
+    cssCodeSplit: true,
     rollupOptions: {
       output: {
         manualChunks: {
           gsap: ['gsap', '@gsap/react'],
+          lenis: ['lenis'],
           vendor: ['react', 'react-dom', 'react-router-dom'],
         }
       }

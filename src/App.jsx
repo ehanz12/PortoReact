@@ -8,7 +8,7 @@ import CustomCursor from "./components/CustomCursor";
 import ScrollProgress from "./components/ScrollProgress";
 import BackToTop from "./components/BackToTop";
 import PageTransition from "./components/PageTransition";
-import { initLenis } from "./lib/lenis";
+import { initLenis, destroyLenis, scrollToTarget } from "./lib/lenis";
 import { prefersReducedMotion, signalAppReady } from "./lib/motion";
 
 const Projects = React.lazy(() => import("./pages/Projects"));
@@ -18,15 +18,13 @@ const ScrollToHash = () => {
 
   useEffect(() => {
     if (hash) {
-      const id = hash.replace("#", "");
-      const element = document.getElementById(id);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: "smooth" });
-        }, 100);
-      }
+      // Tunggu satu frame agar DOM siap, lalu pakai Lenis (tidak konflik)
+      const id = setTimeout(() => {
+        scrollToTarget(hash, { duration: 1.2 });
+      }, 120);
+      return () => clearTimeout(id);
     } else {
-      window.scrollTo({ top: 0, behavior: "auto" });
+      scrollToTarget(0, { immediate: true });
     }
   }, [pathname, hash]);
 
@@ -41,6 +39,7 @@ const App = () => {
     if (!reducedMotion) {
       initLenis();
     }
+    return () => destroyLenis();
   }, [reducedMotion]);
 
   useEffect(() => {

@@ -1,29 +1,33 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import Hero from '../sections/Hero'
 import About from '../sections/About'
-import Experience from '../sections/Experience'
-import Service from '../sections/Service'
-import Work from '../sections/Work'
-import Certificates from '../sections/Certificates'
-import GithubContributions from '../sections/GithubContributions'
-import Marquee from '../sections/Marquee'
-import CTA from '../components/CTA'
 
+const Experience = lazy(() => import('../sections/Experience'));
+const Service = lazy(() => import('../sections/Service'));
+const Work = lazy(() => import('../sections/Work'));
+const Certificates = lazy(() => import('../sections/Certificates'));
+const GithubContributions = lazy(() => import('../sections/GithubContributions'));
+const Marquee = lazy(() => import('../sections/Marquee'));
+const CTA = lazy(() => import('../components/CTA'));
+
+const SectionFallback = () => <div className="min-h-[40vh]" aria-hidden="true" />;
 
 const Home = () => {
   return (
     <>
-      <Hero /> 
+      <Hero />
       <About />
-      <Experience />
-      <Service/>
-      <Work/> 
-      <Certificates />
-      <GithubContributions />
-      <Marquee/>
-      <CTA />
+      <Suspense fallback={<SectionFallback />}>
+        <Experience />
+        <Service />
+        <Work />
+        <Certificates />
+        <GithubContributions />
+        <Marquee />
+        <CTA />
+      </Suspense>
     </>
   )
 }
 
-export default Home
+export default Home

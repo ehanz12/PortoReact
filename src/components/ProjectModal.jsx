@@ -78,6 +78,9 @@ const ProjectModal = ({ project, onClose }) => {
               object-cover object-top
               rounded-xl
             "
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
           />
         </div>
 
