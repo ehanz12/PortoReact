@@ -3,6 +3,7 @@ import project2 from '../assets/images/project2.webp';
 import project3 from '../assets/images/project3.webp';
 import project4 from '../assets/images/project4.webp';
 import project5 from '../assets/images/project5.webp';
+import project6 from '../assets/images/project6.webp';
 
 const  projects = [
   {
@@ -10,7 +11,7 @@ const  projects = [
     name: "MY Dashboard App",
     image: project1,
     link: "https://www.reihan.biz.id",
-    techStack: ["Kotlin", "Golang"],
+    techStack: ["Kotlin", "Golang", "Mysql", "Redis"],
     description: "Aplikasi ini digunakan untuk mengatur aktivitas, keuangan, plan. Dengan fitur fitur yang sangat membantu seperti notifikasi, diagram data jelas, login menggunakan akun google, dan lain lain. Lalu Aplikasi ini dibuat oleh teknologi terbaru yaitu Golang dan Kotlin lalu di lengkapi keamanan yang sangat ketat"
   },
   {
@@ -44,6 +45,14 @@ const  projects = [
     link: "",
     techStack: ["React", "Node.js", "MySQL"],
     description: "Website Capture The Flag (CTF): platform latihan keamanan siber fullstack untuk pengujian sistem secara legal. Aplikasi ini memadukan frontend dashboard interaktif (leaderboard, skor, dan submission) dengan backend RESTful API yang menangani pengelolaan challenge, validasi flag secara real-time, autentikasi aman, serta pencatatan aktivitas peserta secara terstruktur."
+  },
+  {
+    id: 6,
+    name: "Website Presensi Digital",
+    image: project6,
+    link: "https://smart-presence.smkpluspnb.sch.id",
+    techStack: ["Golang", "Mysql", "Nuxt"],
+    description: "Website Presensi Digital siswa SMK PLUS PELITA NUSANTARA website ini digunakan untuk mencatat kehadiran siswa dilengkapi banyak fitur seperti scan qr, lokasi gps sekolah, keamanan tingkat tinggi, logs kehadiran. Website ini juga menggunakan tech modern dan populer yaitu Nuxt dan Golang",
   },
 ]
 
