@@ -36,8 +36,18 @@ if (typeof window !== "undefined") {
 const READY_EVENT = "app:ready";
 
 export const signalAppReady = () => {
+  if (window.__APP_READY__) return;
   window.__APP_READY__ = true;
-  window.dispatchEvent(new Event(READY_EVENT));
+
+  /*
+   * Dispatch di luar call-stack GSAP context.
+   * Preloader memanggil ini dari dalam timeline onComplete; jika event
+   * dikirim sinkron, animasi baru (count-up, navbar) ikut terdaftar di
+   * context Preloader dan ikut di-revert saat Preloader unmount.
+   */
+  const dispatch = () => window.dispatchEvent(new Event(READY_EVENT));
+  if (typeof queueMicrotask === "function") queueMicrotask(dispatch);
+  else setTimeout(dispatch, 0);
 };
 
 export const onAppReady = (cb) => {

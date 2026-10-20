@@ -29,13 +29,9 @@
     }
   }
 
-  /* Konten tersembunyi sampai preloader selesai */
+  /* Konten selalu dirender; preloader hanya overlay di atasnya */
   .app-content {
-    opacity: 0;
-    transition: opacity 0.6s ease;
-  }
-  .app-content.is-ready {
-    opacity: 1;
+    position: relative;
   }
   body {
     @apply bg-black text-white font-body text-base md:text-xl overflow-x-hidden;
@@ -399,6 +395,115 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-float-badge { animation: none; }
+  }
+
+  /* ─── Hero 3D scene & fallback ─── */
+  .hero-scene-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-mask-image: radial-gradient(ellipse at 55% 45%, #000 25%, transparent 78%);
+    mask-image: radial-gradient(ellipse at 55% 45%, #000 25%, transparent 78%);
+  }
+
+  .hero-scene-canvas-wrap,
+  .hero-scene-canvas,
+  .hero-scene-fallback {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-scene-canvas {
+    display: block;
+    opacity: 0.9;
+    transition: opacity 0.8s ease;
+  }
+
+  .hero-scene-fallback {
+    opacity: 1;
+    transition: opacity 0.8s ease;
+  }
+  .hero-scene-fallback.is-dimmed {
+    opacity: 0.12;
+  }
+
+  .hero-scene-orb {
+    position: absolute;
+    left: 55%;
+    top: 50%;
+    width: min(72vw, 680px);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    perspective: 900px;
+  }
+
+  .hero-scene-core {
+    position: absolute;
+    inset: 26%;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 30%, rgba(123, 47, 247, 0.3), transparent 62%),
+      radial-gradient(circle at 65% 70%, rgba(47, 134, 247, 0.18), transparent 65%);
+    filter: blur(10px);
+  }
+
+  .hero-scene-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(123, 47, 247, 0.2);
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .ring-1 {
+    inset: 8%;
+    animation: hero-ring-spin 18s linear infinite;
+  }
+  .ring-2 {
+    inset: 18%;
+    border-color: rgba(47, 134, 247, 0.2);
+    animation: hero-ring-spin 24s linear infinite reverse;
+  }
+  .ring-3 {
+    inset: 1%;
+    border-color: rgba(255, 77, 109, 0.14);
+    animation: hero-ring-flip 20s ease-in-out infinite;
+  }
+
+  @keyframes hero-ring-spin {
+    from { transform: rotateX(62deg) rotateZ(0deg); }
+    to { transform: rotateX(62deg) rotateZ(360deg); }
+  }
+
+  @keyframes hero-ring-flip {
+    0%, 100% { transform: rotateX(62deg) rotateZ(0deg) rotateY(0deg); }
+    50% { transform: rotateX(62deg) rotateZ(180deg) rotateY(55deg); }
+  }
+
+  @media (max-width: 767px) {
+    .hero-scene-orb {
+      left: 50%;
+      width: min(92vw, 520px);
+    }
+    .hero-scene-fallback {
+      opacity: 0.65;
+    }
+    .hero-scene-fallback.is-dimmed {
+      opacity: 0.12;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-scene-ring {
+      animation: none;
+    }
+    .ring-1,
+    .ring-2 {
+      transform: rotateX(62deg);
+    }
   }
 }
 

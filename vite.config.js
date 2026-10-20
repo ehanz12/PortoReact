@@ -16,6 +16,7 @@ export default defineConfig({
         manualChunks: {
           gsap: ['gsap', '@gsap/react'],
           lenis: ['lenis'],
+          three: ['three'],
           vendor: ['react', 'react-dom', 'react-router-dom'],
         }
       }

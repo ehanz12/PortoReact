@@ -1,14 +1,25 @@
-import React, { useEffect, useRef } from "react";
+import React, {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import ButtonGradient from "../components/ButtonGradient";
 import Magnetic from "../components/Magnetic";
+import HeroSceneFallback from "../components/HeroSceneFallback";
+import SceneErrorBoundary from "../components/SceneErrorBoundary";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
 import profilePhoto from "../assets/images/foto1.webp";
 import { onAppReady, prefersReducedMotion, isFinePointer } from "../lib/motion";
+import { get3DTier } from "../lib/three-support";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
+
+const HeroScene3D = lazy(() => import("../components/HeroScene3D"));
 
 const ROLES = ["Developer", "Engineer", "Architect"];
 const SCRAMBLE_CHARS = "!<>-_\\/[]{}=+*^?#01";
@@ -50,17 +61,52 @@ const Hero = () => {
   const roleRef = useRef(null);
   const introTl = useRef(null);
 
+  const [sceneTier] = useState(() => get3DTier());
+  const [shouldLoadScene, setShouldLoadScene] = useState(false);
+  const [sceneReady, setSceneReady] = useState(false);
+  const [sceneFailed, setSceneFailed] = useState(false);
+
+  const handleSceneReady = useCallback(() => setSceneReady(true), []);
+  const handleSceneFail = useCallback(() => {
+    setSceneFailed(true);
+    setSceneReady(false);
+  }, []);
+
+  /* ── Muat scene 3D setelah paint pertama, tanpa menahan initial load ── */
+  useEffect(() => {
+    if (sceneTier === "off") return;
+
+    let timer = null;
+    let idleId = null;
+
+    if (typeof window.requestIdleCallback === "function") {
+      idleId = window.requestIdleCallback(() => setShouldLoadScene(true), {
+        timeout: 1800,
+      });
+    } else {
+      timer = setTimeout(() => setShouldLoadScene(true), 700);
+    }
+
+    return () => {
+      if (idleId !== null) window.cancelIdleCallback(idleId);
+      if (timer !== null) clearTimeout(timer);
+    };
+  }, [sceneTier]);
+
   /* ── Stat count-up ── */
   const countUpStats = () => {
-    heroRef.current.querySelectorAll(".hero-stat-num").forEach((el) => {
+    const stats = heroRef.current?.querySelectorAll(".hero-stat-num");
+    if (!stats) return;
+
+    stats.forEach((el) => {
       const target = parseInt(el.dataset.count, 10);
       const suffix = el.dataset.suffix || "";
       const obj = { value: 0 };
 
       gsap.to(obj, {
         value: target,
-        duration: 1.4,
-        delay: 1.2,
+        duration: 1.2,
+        delay: 0.8,
         ease: "power2.out",
         onUpdate: () => {
           el.textContent = `${Math.round(obj.value)}${suffix}`;
@@ -69,113 +115,135 @@ const Hero = () => {
     });
   };
 
-  /* ── Intro timeline: menunggu preloader selesai ── */
-  useGSAP(() => {
-    SplitText.create(heroRef.current.querySelector("h1"), {
-      type: "lines, words",
-      mask: "lines",
-      autoSplit: true,
-      onSplit(self) {
-        introTl.current = gsap.timeline({ paused: true });
+  /* ── Intro timeline: dibuat sekali, diputar setelah preloader/fallback ── */
+  useGSAP(
+    () => {
+      const stats = heroRef.current?.querySelectorAll(".hero-stat-num") || [];
 
-        introTl.current.from(self.words, {
-          y: 100,
-          opacity: 0,
-          stagger: 0.08,
-          duration: 0.8,
-          ease: "power3.out",
+      /* Reduced motion: konten langsung tampil tanpa animasi */
+      if (prefersReducedMotion()) {
+        stats.forEach((el) => {
+          el.textContent = `${el.dataset.count}${el.dataset.suffix || ""}`;
         });
+        return;
+      }
 
-        introTl.current.from(
+      const tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(
+        ".hero-intro-title",
+        { y: 36, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          ease: "power3.out",
+          clearProps: "opacity,transform",
+        }
+      )
+        .fromTo(
           ".hero-line",
-          { yPercent: 120, duration: 0.9, ease: "power4.out", stagger: 0.12 },
-          "-=0.5"
-        );
-
-        introTl.current
-          .from(".gradien-btn", {
-            y: 40,
-            opacity: 0,
+          { yPercent: 120 },
+          {
+            yPercent: 0,
+            duration: 0.85,
+            stagger: 0.12,
+            ease: "power4.out",
+            clearProps: "transform",
+          },
+          "-=0.45"
+        )
+        .fromTo(
+          ".gradien-btn",
+          { y: 32, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
             duration: 0.5,
             ease: "power2.out",
             clearProps: "opacity,transform",
-          })
-          .from(
-            ".hero-photo-wrapper",
-            { x: 80, opacity: 0, duration: 1, ease: "power3.out" },
-            "-=0.6"
-          )
-          .from(
-            ".hero-badge",
-            { y: 20, opacity: 0, stagger: 0.12, duration: 0.6, ease: "power2.out" },
-            "-=0.7"
-          )
-          .from(
-            ".hero-stat-num",
-            { opacity: 0, y: 16, stagger: 0.1, duration: 0.5 },
-            "-=0.4"
-          );
+          },
+          "-=0.5"
+        )
+        .fromTo(
+          ".hero-photo-wrapper",
+          { x: 60, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out",
+            clearProps: "opacity,transform",
+          },
+          "-=0.55"
+        )
+        .fromTo(
+          ".hero-badge",
+          { y: 18, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.1,
+            duration: 0.5,
+            ease: "power2.out",
+            clearProps: "opacity,transform",
+          },
+          "-=0.5"
+        )
+        .fromTo(
+          ".hero-stat-num",
+          { opacity: 0, y: 14 },
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.08,
+            duration: 0.4,
+            clearProps: "opacity,transform",
+          },
+          "-=0.4"
+        );
 
-        if (window.__APP_READY__) {
-          introTl.current.play();
-          countUpStats();
-        } else {
-          const safety = setTimeout(() => {
-            if (!window.__APP_READY__) {
-              introTl.current?.play();
-              countUpStats();
-            }
-          }, 3000);
-          const origReturn = () => {
-            clearTimeout(safety);
-            introTl.current?.kill();
-          };
-          return origReturn;
-        }
+      introTl.current = tl;
 
-        return () => introTl.current?.kill();
-      },
-    });
+      let played = false;
+      const playIntro = () => {
+        if (played) return;
+        played = true;
+        tl.play(0);
+        countUpStats();
+      };
 
-    /* Pin hero dihapus — penyebab jank + LCP tertahan di desktop.
-       Ganti fade-out ringan tanpa pin. */
-    if (window.innerWidth >= 1024) {
-      gsap.to(heroRef.current, {
-        opacity: 0.35,
-        y: -60,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-    }
+      const offReady = onAppReady(playIntro);
+      /* Jaring pengaman terakhir: hero tidak boleh tetap tersembunyi. */
+      const fallback = setTimeout(playIntro, 1600);
 
-    const offReady = onAppReady(() => {
-      introTl.current?.play();
-      countUpStats();
-    });
-
-    return () => offReady();
-  }, { scope: heroRef });
+      return () => {
+        clearTimeout(fallback);
+        offReady();
+        tl.kill();
+        introTl.current = null;
+      };
+    },
+    { scope: heroRef }
+  );
 
   /* ── Rotasi role dengan efek scramble ── */
   useEffect(() => {
     if (prefersReducedMotion()) return;
 
+    const roleEl = roleRef.current;
+    if (!roleEl) return;
+
     let index = 0;
     const interval = setInterval(() => {
-      if (!roleRef.current) return;
       if (document.hidden) return;
       index = (index + 1) % ROLES.length;
-      scrambleTo(roleRef.current, ROLES[index]);
+      scrambleTo(roleEl, ROLES[index]);
     }, 3200);
 
     return () => {
       clearInterval(interval);
-      if (roleRef.current?._scrambleRaf) cancelAnimationFrame(roleRef.current._scrambleRaf);
+      if (roleEl._scrambleRaf) cancelAnimationFrame(roleEl._scrambleRaf);
     };
   }, []);
 
@@ -206,9 +274,43 @@ const Hero = () => {
     return () => el.removeEventListener("mousemove", onMove);
   }, []);
 
+  /* ── Fade hero saat scroll (desktop, tanpa pin) ── */
+  useGSAP(() => {
+    if (prefersReducedMotion()) return;
+    if (window.innerWidth < 1024) return;
+
+    gsap.to(heroRef.current, {
+      opacity: 0.35,
+      y: -60,
+      ease: "none",
+      scrollTrigger: {
+        trigger: heroRef.current,
+        start: "top top",
+        end: "bottom top",
+        scrub: 1,
+      },
+    });
+  }, { scope: heroRef });
+
   return (
     <>
       <div ref={heroRef} className="relative z-10 overflow-hidden">
+        {/* 3D scene / fallback */}
+        <div className="hero-scene-layer" aria-hidden="true">
+          <HeroSceneFallback dimmed={sceneReady} />
+          {sceneTier !== "off" && !sceneFailed && shouldLoadScene && (
+            <SceneErrorBoundary onError={handleSceneFail} fallback={null}>
+              <Suspense fallback={null}>
+                <HeroScene3D
+                  tier={sceneTier}
+                  onReady={handleSceneReady}
+                  onFail={handleSceneFail}
+                />
+              </Suspense>
+            </SceneErrorBoundary>
+          )}
+        </div>
+
         {/* Background decorative elements */}
         <div className="hero-glow-1" />
         <div className="hero-glow-2" />
@@ -229,7 +331,7 @@ const Hero = () => {
               <span className="text-sm text-white/70 font-body">Available for Work</span>
             </div>
 
-            <h1 className="text-3xl lg:text-[3.2vw] uppercase font-heading font-semibold w-fit mx-auto lg:mx-0">
+            <h1 className="hero-intro-title text-3xl lg:text-[3.2vw] uppercase font-heading font-semibold w-fit mx-auto lg:mx-0">
               Reihan Aditya
             </h1>
 

@@ -33,7 +33,7 @@ const ScrollToHash = () => {
 
 const App = () => {
   const [reducedMotion] = useState(prefersReducedMotion);
-  const [loaded, setLoaded] = useState(reducedMotion);
+  const [preloaderDone, setPreloaderDone] = useState(reducedMotion);
 
   useEffect(() => {
     if (!reducedMotion) {
@@ -48,22 +48,17 @@ const App = () => {
     }
   }, [reducedMotion]);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setLoaded(true);
-    }, 5000);
-    return () => clearTimeout(timeout);
-  }, []);
-
   return (
     <>
-      {!reducedMotion && <Preloader onComplete={() => setLoaded(true)} />}
+      {!reducedMotion && !preloaderDone && (
+        <Preloader onComplete={() => setPreloaderDone(true)} />
+      )}
       <CustomCursor />
       <ScrollProgress />
       <PageTransition />
       <div className="grain-overlay" aria-hidden="true" />
 
-      <div className={loaded ? "app-content is-ready" : "app-content"}>
+      <div className="app-content">
         <ScrollToHash />
         <Navbar />
         <Suspense fallback={null}>
