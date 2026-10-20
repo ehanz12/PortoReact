@@ -7,11 +7,11 @@ import project5 from '../assets/images/project5.webp';
 const  projects = [
   {
     id: 1,
-    name: "Dashboard Pribadi",
+    name: "MY Dashboard App",
     image: project1,
     link: "https://www.reihan.biz.id",
-    techStack: ["React", "Golang"],
-    description: "Web Dashboard To-Do List (Fullstack) ini merupakan aplikasi berbasis web yang dikembangkan untuk membantu pengguna mengelola aktivitas harian secara terstruktur dan efisien. Aplikasi ini dibangun dengan arsitektur fullstack client-server, memadukan frontend React yang interaktif dengan backend Golang yang mengelola logika bisnis dan API secara andal."
+    techStack: ["Kotlin", "Golang"],
+    description: "Aplikasi ini digunakan untuk mengatur aktivitas, keuangan, plan. Dengan fitur fitur yang sangat membantu seperti notifikasi, diagram data jelas, login menggunakan akun google, dan lain lain. Lalu Aplikasi ini dibuat oleh teknologi terbaru yaitu Golang dan Kotlin lalu di lengkapi keamanan yang sangat ketat"
   },
   {
     id: 2,
