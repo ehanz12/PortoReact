@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getLenis } from "../lib/lenis";
+import TiltCard from "../components/TiltCard";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -160,17 +161,17 @@ const Certificates = () => {
 
   return (
     <>
-      <section ref={sectionRef} id="certificates" className="bg-white text-black py-24 lg:py-40">
+      <section ref={sectionRef} id="certificates" className="bg-black text-white py-24 lg:py-40 border-t border-white/5">
         {/* Section Header */}
         <div className="main-container mb-12 lg:mb-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="cert-title-anim">
-              <h3 className="mb-3">Sertifikasi &amp; Pencapaian</h3>
-              <p className="text-lg lg:text-xl text-black/60 max-w-lg">
-                Bukti komitmen saya dalam terus belajar dan berkembang di dunia teknologi.
+              <h3 className="mb-3 text-white/40">Sertifikasi &amp; Pencapaian</h3>
+              <p className="text-lg lg:text-xl text-white/50 max-w-lg">
+                Bukti komitmen saya terus belajar di dunia teknologi.
               </p>
             </div>
-            <span className="cert-title-anim text-5xl lg:text-6xl font-heading font-bold text-black/5 select-none">
+            <span className="cert-title-anim text-5xl lg:text-6xl font-heading font-bold text-white/5 select-none">
               {certificatesData.length} Cert
             </span>
           </div>
@@ -179,45 +180,46 @@ const Certificates = () => {
         {/* Certificates Grid */}
         <div className="cert-grid main-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6" style={{ contentVisibility: "auto", containIntrinsicSize: "auto 600px" }}>
           {certificatesData.map((cert, index) => (
-            <button
-              key={cert.id}
-              className="cert-card group relative rounded-2xl overflow-hidden cursor-pointer text-left"
-              onClick={() => setActiveCert(index)}
-              data-cursor="Lihat"
-            >
-              {/* Image */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
-                <img
-                  src={cert.image}
-                  alt={cert.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                  decoding="async"
-                  width="480"
-                  height="360"
-                />
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white font-heading text-sm uppercase tracking-widest bg-white/20 border border-white/30 rounded-full px-5 py-2">
-                    Lihat Detail
-                  </span>
+            <TiltCard key={cert.id} maxTilt={8} scale={1.02} className="h-full">
+              <button
+                className="cert-card group relative rounded-2xl overflow-hidden cursor-pointer text-left h-full w-full border border-white/10 hover:border-purple-500/40 transition-colors duration-300 bg-zinc-950/60 backdrop-blur-md"
+                onClick={() => setActiveCert(index)}
+                data-cursor="Lihat"
+              >
+                {/* Image */}
+                <div className="relative aspect-[4/3] overflow-hidden bg-zinc-900">
+                  <img
+                    src={cert.image}
+                    alt={cert.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                    width="480"
+                    height="360"
+                  />
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white font-heading text-sm uppercase tracking-widest bg-white/10 border border-white/30 rounded-full px-5 py-2 backdrop-blur-sm">
+                      Lihat Detail
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              {/* Info */}
-              <div className="p-4 bg-gray-50 border border-gray-100">
-                <span className="text-xs font-heading uppercase tracking-wider text-black/40 block mb-1">
-                  {cert.type}
-                </span>
-                <h4 className="font-heading font-semibold text-base leading-snug text-black mb-1">
-                  {cert.title}
-                </h4>
-                <div className="flex items-center justify-between mt-2">
-                  <span className="text-xs text-black/50">{cert.issuer}</span>
-                  <span className="text-xs font-heading font-bold text-black/30">{cert.year}</span>
+                {/* Info */}
+                <div className="p-4 border-t border-white/5">
+                  <span className="text-xs font-heading uppercase tracking-wider text-purple-400 block mb-1">
+                    {cert.type}
+                  </span>
+                  <h4 className="font-heading font-semibold text-base leading-snug text-white mb-1">
+                    {cert.title}
+                  </h4>
+                  <div className="flex items-center justify-between mt-2">
+                    <span className="text-xs text-white/50">{cert.issuer}</span>
+                    <span className="text-xs font-heading font-bold text-white/30">{cert.year}</span>
+                  </div>
                 </div>
-              </div>
-            </button>
+              </button>
+            </TiltCard>
           ))}
         </div>
       </section>

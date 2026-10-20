@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import profilePhoto from "../assets/images/foto1.webp";
+import TiltCard from "../components/TiltCard";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
@@ -16,13 +17,19 @@ const skills = [
   { name: "Git & Version Control", level: 95 },
 ];
 
+const infoItems = [
+  { label: "Nama", value: "Reihan Aditya Putra" },
+  { label: "Sekolah", value: "SMK Plus Pelita Nusantara Bogor" },
+  { label: "Jurusan", value: "RPL (XII RPL 2)" },
+  { label: "Email", value: "rhanssap@gmail.com" },
+];
+
 const About = () => {
   const aboutRef = useRef(null);
+  const [expanded, setExpanded] = useState(false);
 
   useGSAP(() => {
-    // Animate quote text
     const quoteElement = aboutRef.current?.querySelector('.about-quote');
-
     if (!quoteElement) return;
 
     const splitText = SplitText.create(quoteElement, {
@@ -47,12 +54,12 @@ const About = () => {
       },
     });
 
-    // Animate photo
     gsap.from(".about-photo", {
       y: 60,
       opacity: 0,
       duration: 1,
       ease: "power3.out",
+      clearProps: "transform",
       scrollTrigger: {
         trigger: aboutRef.current,
         start: "top 75%",
@@ -60,7 +67,6 @@ const About = () => {
       },
     });
 
-    // Animate skill bars + count-up persentase
     gsap.from(".skill-bar-fill", {
       scaleX: 0,
       transformOrigin: "left center",
@@ -92,7 +98,6 @@ const About = () => {
       });
     });
 
-    // Animate about cards
     gsap.from(".about-info-card", {
       y: 40,
       opacity: 0,
@@ -131,13 +136,17 @@ const About = () => {
     <div
       id="about"
       ref={aboutRef}
-      className="relative z-20 bg-white text-black rounded-tl-[60px] rounded-tr-[60px]"
+      className="relative z-20 bg-black border-t border-white/5"
     >
       {/* ─── Top Bio Section ─── */}
       <div className="main-container py-20 lg:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Left – Photo */}
-          <div className="about-photo relative max-lg:order-2">
+          <TiltCard
+            maxTilt={6}
+            scale={1.01}
+            className="about-photo relative max-lg:order-2"
+          >
             {/* Decorative ring */}
             <div className="absolute inset-0 rounded-3xl hero-photo-border" />
             {/* Floating label top-left */}
@@ -169,34 +178,38 @@ const About = () => {
               <span className="text-base">⚡</span>
               <span className="text-[9px] text-white/40 font-heading uppercase tracking-wider">Fast</span>
             </div>
-          </div>
+          </TiltCard>
 
           {/* Right – Text */}
           <div className="max-lg:order-1">
-            <h3 className="mb-4 text-black/40">Tentang Saya</h3>
-            <p className="about-quote font-heading text-2xl lg:text-3xl xl:text-4xl leading-tight text-black font-semibold mb-8">
-              Sebagai Fullstack Developer Junior, saya fokus merancang antarmuka pengguna yang interaktif dan membangun logika server-side yang solid serta efisien.
+            <h3 className="mb-4 text-white/40">Tentang Saya</h3>
+            <p className="about-quote font-heading text-2xl lg:text-3xl xl:text-4xl leading-tight text-white font-semibold mb-6">
+              Fullstack Developer Junior yang fokus pada antarmuka interaktif dan logika server yang solid.
             </p>
-            <p className="text-black/60 text-lg leading-relaxed mb-8">
-              Saya memiliki pengalaman mengembangkan aplikasi web secara menyeluruh dari frontend hingga backend, serta terbiasa menerapkan kode yang bersih, responsif, dan mudah dipelihara. Dengan semangat belajar dan kemampuan problem solving yang kuat, saya terus mengembangkan keterampilan untuk menciptakan sistem yang stabil, scalable, dan andal.
-            </p>
+            <div className="mb-8">
+              <p className={`text-white/60 text-base lg:text-lg leading-relaxed transition-all duration-500 ${expanded ? "" : "line-clamp-2"}`}>
+                Saya mengembangkan aplikasi web end-to-end dari frontend hingga backend dengan kode yang bersih, responsif, dan mudah dipelihara — didorong semangat belajar dan problem solving yang kuat.
+              </p>
+              <button
+                onClick={() => setExpanded((v) => !v)}
+                className="mt-3 text-sm font-heading uppercase tracking-widest text-white/40 hover:text-white transition-colors duration-300"
+              >
+                {expanded ? "Tutup −" : "Selengkapnya +"}
+              </button>
+            </div>
 
             {/* Info chips */}
             <div className="about-info-grid grid grid-cols-2 gap-3">
-              {[
-                { label: "Nama", value: "Reihan Aditya Putra" },
-                { label: "Sekolah", value: "SMK Plus Pelita Nusantara Bogor" },
-                { label: "Jurusan", value: "RPL (XII RPL 2)" },
-                { label: "Email", value: "rhanssap@gmail.com" },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  onMouseMove={handleSpotlight}
-                  className="about-info-card spotlight-card bg-gray-50 border border-gray-100 rounded-2xl p-4 transition-colors duration-300 hover:border-purple-200"
-                >
-                  <p className="text-xs font-heading uppercase tracking-wider text-black/40 mb-1 relative z-10">{item.label}</p>
-                  <p className="font-heading font-semibold text-sm text-black break-words relative z-10">{item.value}</p>
-                </div>
+              {infoItems.map((item) => (
+                <TiltCard key={item.label} maxTilt={8} scale={1.02}>
+                  <div
+                    onMouseMove={handleSpotlight}
+                    className="about-info-card spotlight-card h-full bg-zinc-950/60 border border-white/10 rounded-2xl p-4 transition-colors duration-300 hover:border-purple-500/40"
+                  >
+                    <p className="text-xs font-heading uppercase tracking-wider text-white/40 mb-1 relative z-10">{item.label}</p>
+                    <p className="font-heading font-semibold text-sm text-white break-words relative z-10">{item.value}</p>
+                  </div>
+                </TiltCard>
               ))}
             </div>
           </div>
@@ -204,22 +217,22 @@ const About = () => {
       </div>
 
       {/* ─── Skills Section ─── */}
-      <div className="skills-section bg-gray-50 py-20 lg:py-28">
+      <div className="skills-section bg-zinc-950/40 border-t border-white/5 py-20 lg:py-28">
         <div className="main-container">
-          <h3 className="mb-2 text-black/40">Keahlian Teknis</h3>
-          <p className="font-heading font-bold text-3xl lg:text-4xl text-black mb-12">
+          <h3 className="mb-2 text-white/40">Keahlian Teknis</h3>
+          <p className="font-heading font-bold text-3xl lg:text-4xl text-white mb-12">
             Stack yang saya kuasai
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8">
             {skills.map((skill) => (
               <div key={skill.name}>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="font-heading font-semibold text-black">{skill.name}</span>
-                  <span className="skill-percent text-sm font-body text-black/40" data-level={skill.level}>
+                  <span className="font-heading font-semibold text-white">{skill.name}</span>
+                  <span className="skill-percent text-sm font-body text-white/40" data-level={skill.level}>
                     0%
                   </span>
                 </div>
-                <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
                   <div
                     className="skill-bar-fill h-full rounded-full skill-bar-gradient"
                     style={{ width: `${skill.level}%` }}

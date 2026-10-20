@@ -24,7 +24,7 @@ const ProjectModal = ({ project, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fade-in p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in p-4"
       role="dialog"
       aria-modal="true"
     >
@@ -34,7 +34,7 @@ const ProjectModal = ({ project, onClose }) => {
       {/* modal */}
       <div
         className="
-          relative bg-white text-black rounded-2xl
+          relative bg-zinc-950 text-white border border-white/10 rounded-2xl
           w-full max-w-3xl mx-4
           max-h-[90vh] overflow-y-auto
           p-4 sm:p-6 lg:p-10
@@ -46,9 +46,9 @@ const ProjectModal = ({ project, onClose }) => {
           onClick={onClose}
           className="
             absolute top-3 right-3 sm:top-4 sm:right-4
-            w-9 h-9 rounded-full border border-black/10
+            w-9 h-9 rounded-full border border-white/15 text-white/70
             flex items-center justify-center
-            hover:bg-black hover:text-white hover:rotate-90
+            hover:bg-white hover:text-black hover:rotate-90
             transition-all duration-300
           "
           aria-label="Tutup modal"
@@ -68,7 +68,7 @@ const ProjectModal = ({ project, onClose }) => {
         </h3>
 
         {/* image */}
-        <div className="w-full mb-4 sm:mb-6">
+        <div className="w-full mb-4 sm:mb-6 rounded-xl overflow-hidden border border-white/10">
           <img
             src={project.image}
             alt={project.name}
@@ -76,7 +76,6 @@ const ProjectModal = ({ project, onClose }) => {
               w-full
               max-h-60 sm:max-h-72 lg:max-h-96
               object-cover object-top
-              rounded-xl
             "
             loading="eager"
             decoding="async"
@@ -87,7 +86,7 @@ const ProjectModal = ({ project, onClose }) => {
         {/* tech stack */}
         {project.techStack?.length > 0 && (
           <div className="mb-4 sm:mb-6">
-            <h4 className="text-xs sm:text-sm font-heading font-semibold uppercase tracking-widest mb-2 sm:mb-3">
+            <h4 className="text-xs sm:text-sm font-heading font-semibold uppercase tracking-widest text-white/40 mb-2 sm:mb-3">
               Tech Stack
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -96,9 +95,9 @@ const ProjectModal = ({ project, onClose }) => {
                   key={tech}
                   className="
                     inline-flex items-center
-                    px-3 py-1 rounded-full border border-black/20
-                    bg-black/5 text-xs sm:text-sm font-medium
-                    transition-colors duration-200 hover:bg-gradient-to-r hover:from-pink-500/10 hover:to-purple-500/10 hover:border-purple-300
+                    px-3 py-1 rounded-full border border-white/15
+                    bg-white/5 text-white/80 text-xs sm:text-sm font-medium
+                    transition-colors duration-200 hover:border-purple-500/50 hover:text-white
                   "
                 >
                   {tech}
@@ -112,7 +111,7 @@ const ProjectModal = ({ project, onClose }) => {
         <p
           className="
             text-sm sm:text-base lg:text-lg
-            leading-relaxed
+            leading-relaxed text-white/70
             mb-6
           "
         >
@@ -128,9 +127,9 @@ const ProjectModal = ({ project, onClose }) => {
             className="
               inline-flex items-center gap-2
               px-5 py-2.5 sm:px-6 sm:py-3
-              rounded-full border border-black
-              text-sm sm:text-base font-heading uppercase tracking-wide
-              hover:bg-black hover:text-white
+              rounded-full border border-white
+              text-sm sm:text-base font-heading uppercase tracking-wide text-white
+              hover:bg-white hover:text-black
               transition-all duration-300
               group
             "

@@ -83,7 +83,7 @@ const Marquee = () => {
   const useCssAnimation = !isFinePointer();
 
   return (
-    <div className='bg-white text-black pb-28 lg:pb-44 overflow-hidden'>
+    <div className='bg-black text-white border-t border-white/5 pb-28 lg:pb-44 overflow-hidden'>
       {/* Row 1 */}
       <div className='whitespace-nowrap text-4xl sm:text-5xl lg:text-[7vw] font-heading font-semibold overflow-hidden'>
         <span
@@ -99,7 +99,7 @@ const Marquee = () => {
       <div className='whitespace-nowrap text-4xl sm:text-5xl lg:text-[7vw] font-heading font-semibold overflow-hidden'>
         <span
           ref={row2Ref}
-          className={`flex gap-3 lg:gap-8 mx-4 lg:mx-8 items-center will-change-transform ${
+          className={`flex gap-3 lg:gap-8 mx-4 lg:mx-8 items-center will-change-transform gradient-text ${
             useCssAnimation ? 'animate-marquee-reverse' : ''
           }`}
         >

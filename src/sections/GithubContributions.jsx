@@ -211,8 +211,8 @@ const GithubContributions = () => {
               Repositori &amp; Kontribusi
             </p>
           </div>
-          <p className="text-base lg:text-lg text-white/60 max-w-md">
-            Melihat aktivitas pengodean saya secara real-time, proyek open source yang dikembangkan, dan kontribusi komparatif di GitHub.
+          <p className="text-base lg:text-lg text-white/50 max-w-md">
+            Aktivitas pengodean &amp; proyek open source saya di GitHub.
           </p>
         </div>
 

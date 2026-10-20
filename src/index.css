@@ -89,11 +89,6 @@
     color: white;
   }
 
-  .btn-light {
-    background: linear-gradient(#fff, #fff) padding-box,
-    var(--color-gradient) border-box;
-  }
-
   @keyframes marquee {
     from {
         transform: translateX(0);
