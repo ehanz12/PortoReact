@@ -2,7 +2,15 @@ import React, { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { seededRandom } from "../lib/motion";
 
-const PALETTE = ["#FF4D6D", "#BD3EB2", "#7B2FF7", "#2F86F7", "#2FF7ED"];
+const FALLBACK_PALETTE = ["#22D3EE", "#38BDF8", "#3B82F6", "#6366F1", "#818CF8"];
+
+const readPalette = () => {
+  const cs = getComputedStyle(document.documentElement);
+  const palette = ["--c1", "--c2", "--c3", "--c4", "--c5"].map((name) =>
+    cs.getPropertyValue(name).trim()
+  );
+  return palette.every(Boolean) ? palette : FALLBACK_PALETTE;
+};
 
 const HeroScene3D = ({ tier = "full", onReady, onFail }) => {
   const mountRef = useRef(null);
@@ -129,10 +137,12 @@ const HeroScene3D = ({ tier = "full", onReady, onFail }) => {
       group = new THREE.Group();
       scene.add(group);
 
+      const palette = readPalette();
+
       /* Wireframe luar & dalam */
       const shellGeo = new THREE.IcosahedronGeometry(1.95, tier === "full" ? 1 : 0);
       const shellMat = new THREE.MeshBasicMaterial({
-        color: 0x7b2ff7,
+        color: palette[2],
         wireframe: true,
         transparent: true,
         opacity: 0.16,
@@ -142,7 +152,7 @@ const HeroScene3D = ({ tier = "full", onReady, onFail }) => {
 
       const innerGeo = new THREE.IcosahedronGeometry(1.3, 0);
       const innerMat = new THREE.MeshBasicMaterial({
-        color: 0x2f86f7,
+        color: palette[3],
         wireframe: true,
         transparent: true,
         opacity: 0.22,
@@ -166,7 +176,7 @@ const HeroScene3D = ({ tier = "full", onReady, onFail }) => {
 
       const ringGeoA = new THREE.BufferGeometry().setFromPoints(ringPoints(2.45));
       const ringMatA = new THREE.LineBasicMaterial({
-        color: 0xff4d6d,
+        color: palette[0],
         transparent: true,
         opacity: 0.2,
         depthWrite: false,
@@ -177,7 +187,7 @@ const HeroScene3D = ({ tier = "full", onReady, onFail }) => {
 
       const ringGeoB = new THREE.BufferGeometry().setFromPoints(ringPoints(2.8));
       const ringMatB = new THREE.LineBasicMaterial({
-        color: 0x2ff7ed,
+        color: palette[4],
         transparent: true,
         opacity: 0.12,
         depthWrite: false,
@@ -204,7 +214,7 @@ const HeroScene3D = ({ tier = "full", onReady, onFail }) => {
         positions[i * 3 + 1] = radius * sinPhi * Math.sin(theta) * 0.72;
         positions[i * 3 + 2] = radius * Math.cos(phi);
 
-        color.set(PALETTE[Math.floor(random() * PALETTE.length)]);
+        color.set(palette[Math.floor(random() * palette.length)]);
         colors[i * 3] = color.r;
         colors[i * 3 + 1] = color.g;
         colors[i * 3 + 2] = color.b;

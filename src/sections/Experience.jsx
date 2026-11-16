@@ -126,7 +126,7 @@ const Experience = () => {
 
                   {/* Timeline Badge/Dot */}
                   <div className="relative flex items-center justify-start sm:justify-center z-10 w-8 sm:w-0">
-                    <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-black border-4 border-purple-500 shadow-[0_0_12px_rgba(168,85,247,0.5)]" />
+                    <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-black border-4 border-[var(--c3)] [box-shadow:0_0_12px_color-mix(in_oklab,var(--c3)_50%,transparent)]" />
                   </div>
 
                   {/* Card Content */}

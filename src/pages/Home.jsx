@@ -4,7 +4,7 @@ import About from '../sections/About'
 
 const Experience = lazy(() => import('../sections/Experience'));
 const Service = lazy(() => import('../sections/Service'));
-const Work = lazy(() => import('../sections/Work'));
+const Projects = lazy(() => import('../sections/Projects'));
 const Certificates = lazy(() => import('../sections/Certificates'));
 const GithubContributions = lazy(() => import('../sections/GithubContributions'));
 const Marquee = lazy(() => import('../sections/Marquee'));
@@ -20,7 +20,7 @@ const Home = () => {
       <Suspense fallback={<SectionFallback />}>
         <Experience />
         <Service />
-        <Work />
+        <Projects />
         <Certificates />
         <GithubContributions />
         <Marquee />

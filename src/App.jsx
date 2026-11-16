@@ -12,6 +12,7 @@ import { initLenis, destroyLenis, scrollToTarget } from "./lib/lenis";
 import { prefersReducedMotion, signalAppReady } from "./lib/motion";
 
 const Projects = React.lazy(() => import("./pages/Projects"));
+const Certificates = React.lazy(() => import("./pages/Certificates"));
 
 const ScrollToHash = () => {
   const { hash, pathname } = useLocation();
@@ -25,6 +26,7 @@ const ScrollToHash = () => {
       return () => clearTimeout(id);
     } else {
       scrollToTarget(0, { immediate: true });
+      window.scrollTo(0, 0);
     }
   }, [pathname, hash]);
 
@@ -53,9 +55,7 @@ const App = () => {
       {!reducedMotion && !preloaderDone && (
         <Preloader onComplete={() => setPreloaderDone(true)} />
       )}
-      <CustomCursor />
       <ScrollProgress />
-      <PageTransition />
       <div className="grain-overlay" aria-hidden="true" />
 
       <div className="app-content">
@@ -65,6 +65,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/certificates" element={<Certificates />} />
           </Routes>
         </Suspense>
         <Footer />

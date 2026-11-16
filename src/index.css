@@ -1,15 +1,35 @@
 @import "tailwindcss";
 
+/* ─── Ocean palette ─────────────────────────────────────────────────────
+   5 warna se-jajar (cyan → indigo) untuk gradient, glow, border,
+   particle, dan scene 3D. Semua aksen situs memakai token ini. */
+:root {
+  --c1: #22d3ee;
+  --c2: #38bdf8;
+  --c3: #3b82f6;
+  --c4: #6366f1;
+  --c5: #818cf8;
+
+  /* ── Motion & Animation Design Tokens ── */
+  --ease-out-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-standard: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out-standard: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-medium: 300ms;
+}
+
 @theme {
   --font-body: "inter", sans-serif;
   --font-heading: "syne", sans-serif;
   --color-gradient: linear-gradient(
     90deg,
-    #FF4D6D 0%,
-    #BD3EB2 25%,
-    #7B2FF7 50%,
-    #2F86F7 75%,
-    #2FF7ED 100%
+    var(--c1) 0%,
+    var(--c2) 20%,
+    var(--c3) 40%,
+    var(--c4) 60%,
+    var(--c5) 80%,
+    #fff 100%
   );
 }
 
@@ -17,16 +37,6 @@
   html {
     scroll-padding-top: 80px;
     scroll-padding-bottom: 80px;
-  }
-
-  /* Native cursor disembunyikan di desktop — diganti custom cursor */
-  @media (pointer: fine) {
-    body,
-    a,
-    button,
-    [role="button"] {
-      cursor: none;
-    }
   }
 
   /* Konten selalu dirender; preloader hanya overlay di atasnya */
@@ -98,6 +108,36 @@
     }
   }
 
+  @keyframes marquee-continuous {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+  @keyframes marquee-continuous2 {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(0%); }
+  }
+  @keyframes marquee-reverse-continuous {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(0%); }
+  }
+  @keyframes marquee-reverse-continuous2 {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .animate-marquee-continuous {
+    animation: marquee-continuous 32s linear infinite;
+  }
+  .animate-marquee-continuous2 {
+    animation: marquee-continuous2 32s linear infinite;
+  }
+  .animate-marquee-reverse-continuous {
+    animation: marquee-reverse-continuous 32s linear infinite;
+  }
+  .animate-marquee-reverse-continuous2 {
+    animation: marquee-reverse-continuous2 32s linear infinite;
+  }
+
   .animate-marquee {
     animation: marquee 25s linear infinite;
   }
@@ -121,7 +161,7 @@
 
   /* ─── Gradient Text (statis — tanpa shimmer infinite agar hemat GPU) ─── */
   .gradient-text {
-    background: linear-gradient(90deg, #FF4D6D 0%, #BD3EB2 40%, #7B2FF7 70%, #2F86F7 100%);
+    background: var(--color-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -135,7 +175,7 @@
     width: 40vw;
     height: 40vw;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(123, 47, 247, 0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, color-mix(in oklab, var(--c3) 12%, transparent) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
@@ -147,7 +187,7 @@
     width: 36vw;
     height: 36vw;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(47, 134, 247, 0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, color-mix(in oklab, var(--c4) 8%, transparent) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
@@ -158,12 +198,12 @@
     padding: 2px;
     z-index: 0;
     overflow: hidden;
-    background: linear-gradient(135deg, #FF4D6D, #7B2FF7, #2F86F7);
+    background: var(--color-gradient);
   }
 
   /* ─── Skill bar gradient ─── */
   .skill-bar-gradient {
-    background: linear-gradient(90deg, #FF4D6D 0%, #BD3EB2 40%, #7B2FF7 70%, #2F86F7 100%);
+    background: var(--color-gradient);
   }
 
   /* ─── Grain overlay (statis — tanpa animasi agar tidak repaint full-page) ─── */
@@ -310,7 +350,7 @@
     color: transparent;
     -webkit-text-stroke: 1px rgba(255, 255, 255, 0.5);
     transition: all 0.5s ease;
-    background-image: linear-gradient(90deg, #FF4D6D, #BD3EB2, #7B2FF7, #2F86F7);
+    background-image: var(--color-gradient);
     background-size: 0% 100%;
     background-repeat: no-repeat;
     -webkit-background-clip: text;
@@ -335,7 +375,7 @@
     transition: opacity 0.4s ease;
     background: radial-gradient(
       240px circle at var(--spot-x, 50%) var(--spot-y, 50%),
-      rgba(123, 47, 247, 0.12),
+      color-mix(in oklab, var(--c3) 12%, transparent),
       transparent 65%
     );
     pointer-events: none;
@@ -358,12 +398,12 @@
     border-radius: 50%;
     animation: particle-float 12s ease-in-out infinite;
   }
-  .particle-1 { top: 18%; left: 12%; width: 3px; height: 3px; background: rgba(123, 47, 247, 0.4); animation-delay: 0s; animation-duration: 11s; }
-  .particle-2 { top: 62%; left: 22%; width: 2px; height: 2px; background: rgba(47, 134, 247, 0.35); animation-delay: 1.2s; animation-duration: 13s; }
-  .particle-3 { top: 33%; left: 72%; width: 3px; height: 3px; background: rgba(255, 77, 109, 0.3); animation-delay: 2.5s; animation-duration: 12s; }
-  .particle-4 { top: 78%; left: 82%; width: 4px; height: 4px; background: rgba(255, 77, 109, 0.25); animation-delay: 0.8s; animation-duration: 14s; }
-  .particle-5 { top: 12%; left: 58%; width: 2px; height: 2px; background: rgba(47, 247, 237, 0.3); animation-delay: 3s; animation-duration: 12s; }
-  .particle-6 { top: 52%; left: 38%; width: 3px; height: 3px; background: rgba(123, 47, 247, 0.25); animation-delay: 1.8s; animation-duration: 11.5s; }
+  .particle-1 { top: 18%; left: 12%; width: 3px; height: 3px; background: color-mix(in oklab, var(--c3) 40%, transparent); animation-delay: 0s; animation-duration: 11s; }
+  .particle-2 { top: 62%; left: 22%; width: 2px; height: 2px; background: color-mix(in oklab, var(--c4) 35%, transparent); animation-delay: 1.2s; animation-duration: 13s; }
+  .particle-3 { top: 33%; left: 72%; width: 3px; height: 3px; background: color-mix(in oklab, var(--c1) 30%, transparent); animation-delay: 2.5s; animation-duration: 12s; }
+  .particle-4 { top: 78%; left: 82%; width: 4px; height: 4px; background: color-mix(in oklab, var(--c1) 25%, transparent); animation-delay: 0.8s; animation-duration: 14s; }
+  .particle-5 { top: 12%; left: 58%; width: 2px; height: 2px; background: color-mix(in oklab, var(--c5) 30%, transparent); animation-delay: 3s; animation-duration: 12s; }
+  .particle-6 { top: 52%; left: 38%; width: 3px; height: 3px; background: color-mix(in oklab, var(--c3) 25%, transparent); animation-delay: 1.8s; animation-duration: 11.5s; }
 
   @keyframes particle-float {
     0%, 100% { transform: translateY(0); opacity: 0.3; }
@@ -435,15 +475,15 @@
     inset: 26%;
     border-radius: 50%;
     background:
-      radial-gradient(circle at 35% 30%, rgba(123, 47, 247, 0.3), transparent 62%),
-      radial-gradient(circle at 65% 70%, rgba(47, 134, 247, 0.18), transparent 65%);
+      radial-gradient(circle at 35% 30%, color-mix(in oklab, var(--c3) 30%, transparent), transparent 62%),
+      radial-gradient(circle at 65% 70%, color-mix(in oklab, var(--c4) 18%, transparent), transparent 65%);
     filter: blur(10px);
   }
 
   .hero-scene-ring {
     position: absolute;
     border-radius: 50%;
-    border: 1px solid rgba(123, 47, 247, 0.2);
+    border: 1px solid color-mix(in oklab, var(--c3) 20%, transparent);
     transform-style: preserve-3d;
     will-change: transform;
   }
@@ -453,12 +493,12 @@
   }
   .ring-2 {
     inset: 18%;
-    border-color: rgba(47, 134, 247, 0.2);
+    border-color: color-mix(in oklab, var(--c4) 20%, transparent);
     animation: hero-ring-spin 24s linear infinite reverse;
   }
   .ring-3 {
     inset: 1%;
-    border-color: rgba(255, 77, 109, 0.14);
+    border-color: color-mix(in oklab, var(--c1) 14%, transparent);
     animation: hero-ring-flip 20s ease-in-out infinite;
   }
 

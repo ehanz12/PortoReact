@@ -1,107 +1,24 @@
 import React, { useRef, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getLenis } from "../lib/lenis";
 import TiltCard from "../components/TiltCard";
+import certificatesData from "../components/CertificatesData";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
-
-const certImageModules = import.meta.glob("../assets/images/sertifikat*.webp", { eager: true });
-const certImages = Object.keys(certImageModules)
-  .sort()
-  .map((key) => certImageModules[key].default);
-
-const certificatesData = [
-  {
-    id: 1,
-    image: certImages[0],
-    title: "Google Cloud Roadshows",
-    issuer: "Google Developer Group Bogor",
-    year: "2025",
-    type: "Certificate of Attendance",
-  },
-  {
-    id: 2,
-    image: certImages[1],
-    title: "From Vision to Version 1.0",
-    issuer: "CodeLamp Indonesia",
-    year: "2025",
-    type: "Webinar Participant",
-  },
-  {
-    id: 3,
-    image: certImages[2],
-    title: "Google I/O Extended Bogor",
-    issuer: "GDG Bogor & Women Techmakers",
-    year: "2025",
-    type: "Certificate of Attendance",
-  },
-  {
-    id: 4,
-    image: certImages[3],
-    title: "Game Design: From Hobby to Hook",
-    issuer: "CodeLamp Indonesia",
-    year: "2025",
-    type: "Webinar Participant",
-  },
-  {
-    id: 5,
-    image: certImages[4],
-    title: "Nasional Basic Public Speaking",
-    issuer: "Galeria Potensi",
-    year: "2026",
-    type: "Webinar Participant"
-  },
-  {
-    id: 6,
-    image: certImages[5],
-    title: "Introduction to Capture The Flag",
-    issuer: "ID-NetWorkers",
-    year: "2025",
-    type: "Webinar Participant"
-  },
-  {
-    id: 7,
-    image: certImages[6],
-    title: "Strategi, Menciptakan Komunikasi Yang Nyaman",
-    issuer: "Galeria Potensi",
-    year: "2026",
-    type: "Webinar Participant"
-  },
-  {
-    id: 8,
-    image: certImages[7],
-    title: "Festival Lomba Kompetisi Siswa Tingkat SMK Kabupaten Bogor",
-    issuer: "Disdik Jabar",
-    year: "2026",
-    type: "Prestasi / Contest"
-  },
-  {
-    id: 9,
-    image: certImages[8],
-    title: "Python Developer",
-    issuer: "Sololearn",
-    year: "2025",
-    type: "Course Certificate"
-  },
-  {
-    id: 10,
-    image: certImages[9],
-    title: "Vibe Koding",
-    issuer: "Sololearn",
-    year: "2025",
-    type: "Course Certificate"
-  }
-];
 
 const Certificates = () => {
   const sectionRef = useRef(null);
   const [activeCert, setActiveCert] = useState(null);
 
+  // Ambil 3 sertifikat unggulan untuk halaman utama
+  const previewCertificates = certificatesData.slice(0, 3);
+
   /* ── Lock scroll saat lightbox terbuka (Lenis-aware) ── */
   useEffect(() => {
-    if (!activeCert) return;
+    if (activeCert === null) return;
     const lenis = getLenis();
     lenis?.stop();
     document.body.style.overflow = "hidden";
@@ -121,20 +38,20 @@ const Certificates = () => {
     const onKey = (e) => {
       if (e.key === "Escape") setActiveCert(null);
       if (e.key === "ArrowRight")
-        setActiveCert((i) => (i + 1) % certificatesData.length);
+        setActiveCert((i) => (i + 1) % previewCertificates.length);
       if (e.key === "ArrowLeft")
         setActiveCert((i) =>
-          i === 0 ? certificatesData.length - 1 : i - 1
+          i === 0 ? previewCertificates.length - 1 : i - 1
         );
     };
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [lightboxOpen]);
+  }, [lightboxOpen, previewCertificates.length]);
 
   useGSAP(() => {
     gsap.from(".cert-title-anim", {
-      y: 60,
+      y: 50,
       opacity: 0,
       duration: 0.8,
       ease: "power3.out",
@@ -146,7 +63,7 @@ const Certificates = () => {
     });
 
     gsap.from(".cert-card", {
-      y: 80,
+      y: 60,
       opacity: 0,
       stagger: 0.15,
       duration: 0.8,
@@ -161,142 +78,157 @@ const Certificates = () => {
 
   return (
     <>
-      <section ref={sectionRef} id="certificates" className="bg-black text-white py-24 lg:py-40 border-t border-white/5">
+      <section ref={sectionRef} id="certificates" className="bg-black text-white py-24 lg:py-36 border-t border-white/5 relative">
         {/* Section Header */}
         <div className="main-container mb-12 lg:mb-16">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-8">
             <div className="cert-title-anim">
-              <h3 className="mb-3 text-white/40">Sertifikasi &amp; Pencapaian</h3>
-              <p className="text-lg lg:text-xl text-white/50 max-w-lg">
-                Bukti komitmen saya terus belajar di dunia teknologi.
+              <h3 className="mb-2 text-sm sm:text-base text-cyan-400 font-mono uppercase tracking-wider">
+                Certifications &amp; Achievements
+              </h3>
+              <p className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-white">
+                Sertifikat Pilihan
               </p>
             </div>
-            <span className="cert-title-anim text-5xl lg:text-6xl font-heading font-bold text-white/5 select-none">
-              {certificatesData.length} Cert
-            </span>
+            
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <p className="text-xs sm:text-sm text-white/50 max-w-sm font-body">
+                Bukti kompetensi dan dedikasi dalam eksplorasi dunia cloud, backend, dan teknologi web.
+              </p>
+              <Link
+                to="/certificates"
+                className="px-5 py-2.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500 hover:text-black text-cyan-300 font-mono text-xs transition-all duration-300 shrink-0 flex items-center gap-2"
+              >
+                <span>Lihat Semua ({certificatesData.length})</span>
+                <span>→</span>
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* Certificates Grid */}
-        <div className="cert-grid main-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6" style={{ contentVisibility: "auto", containIntrinsicSize: "auto 600px" }}>
-          {certificatesData.map((cert, index) => (
-            <TiltCard key={cert.id} maxTilt={8} scale={1.02} className="h-full">
+        {/* 3 Featured Certificates Grid */}
+        <div className="cert-grid main-container grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {previewCertificates.map((cert, index) => (
+            <TiltCard key={cert.id} maxTilt={6} scale={1.01} className="h-full">
               <button
-                className="cert-card group relative rounded-2xl overflow-hidden cursor-pointer text-left h-full w-full border border-white/10 hover:border-purple-500/40 transition-colors duration-300 bg-zinc-950/60 backdrop-blur-md"
+                className="cert-card group relative rounded-2xl overflow-hidden cursor-pointer text-left h-full w-full border border-white/10 hover:border-cyan-500/40 transition-all duration-300 bg-zinc-950/60 backdrop-blur-md flex flex-col justify-between"
                 onClick={() => setActiveCert(index)}
-                data-cursor="Lihat"
               >
                 {/* Image */}
-                <div className="relative aspect-[4/3] overflow-hidden bg-zinc-900">
+                <div className="relative aspect-[16/11] overflow-hidden bg-zinc-900 w-full">
                   <img
                     src={cert.image}
                     alt={cert.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
                     decoding="async"
-                    width="480"
-                    height="360"
                   />
                   {/* Hover overlay */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white font-heading text-sm uppercase tracking-widest bg-white/10 border border-white/30 rounded-full px-5 py-2 backdrop-blur-sm">
-                      Lihat Detail
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white font-mono text-xs uppercase tracking-widest bg-white/10 border border-white/30 rounded-full px-4 py-1.5 backdrop-blur-sm">
+                      Perbesar Sertifikat ↗
                     </span>
                   </div>
                 </div>
 
                 {/* Info */}
-                <div className="p-4 border-t border-white/5">
-                  <span className="text-xs font-heading uppercase tracking-wider text-purple-400 block mb-1">
-                    {cert.type}
-                  </span>
-                  <h4 className="font-heading font-semibold text-base leading-snug text-white mb-1">
-                    {cert.title}
-                  </h4>
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="text-xs text-white/50">{cert.issuer}</span>
-                    <span className="text-xs font-heading font-bold text-white/30">{cert.year}</span>
+                <div className="p-5 border-t border-white/5 flex-1 flex flex-col justify-between w-full">
+                  <div>
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 block mb-1.5">
+                      {cert.type}
+                    </span>
+                    <h4 className="font-heading font-semibold text-base sm:text-lg leading-snug text-white group-hover:text-cyan-300 transition-colors mb-2">
+                      {cert.title}
+                    </h4>
+                  </div>
+                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/5">
+                    <span className="text-xs text-white/50 truncate mr-2">{cert.issuer}</span>
+                    <span className="text-xs font-mono font-bold text-white/30 shrink-0">{cert.year}</span>
                   </div>
                 </div>
               </button>
             </TiltCard>
           ))}
         </div>
+
+        {/* Bottom CTA to Full Certificates Page */}
+        <div className="main-container text-center mt-12">
+          <Link
+            to="/certificates"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/15 bg-white/5 hover:bg-white hover:text-black font-heading text-xs uppercase tracking-wider text-white transition-all duration-300"
+          >
+            <span>Buka Semua Sertifikat &amp; Pencapaian</span>
+            <span>↗</span>
+          </Link>
+        </div>
       </section>
 
       {/* Lightbox Modal */}
       {activeCert !== null && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in"
-          onClick={() => setActiveCert(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-fade-in"
           role="dialog"
           aria-modal="true"
+          onClick={() => setActiveCert(null)}
         >
           <div
-            key={activeCert}
-            className="relative max-w-4xl w-full animate-scale-in"
+            className="relative max-w-4xl w-full bg-zinc-950 border border-white/15 rounded-2xl overflow-hidden shadow-2xl p-4 sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
             <button
               onClick={() => setActiveCert(null)}
-              className="absolute -top-12 right-0 text-white/60 hover:text-white transition-colors font-heading text-sm uppercase tracking-widest flex items-center gap-2"
+              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/10 hover:bg-white hover:text-black text-white flex items-center justify-center text-sm transition-colors cursor-pointer"
+              aria-label="Tutup sertifikat"
             >
-              Tutup <span className="text-lg">✕</span>
-            </button>
-
-            {/* Prev / Next */}
-            <button
-              onClick={() =>
-                setActiveCert((i) =>
-                  i === 0 ? certificatesData.length - 1 : i - 1
-                )
-              }
-              aria-label="Sertifikat sebelumnya"
-              className="absolute top-1/2 -left-4 lg:-left-16 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 text-white flex items-center justify-center transition-all duration-300 hover:scale-110"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              onClick={() => setActiveCert((i) => (i + 1) % certificatesData.length)}
-              aria-label="Sertifikat berikutnya"
-              className="absolute top-1/2 -right-4 lg:-right-16 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 text-white flex items-center justify-center transition-all duration-300 hover:scale-110"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-              </svg>
+              ✕
             </button>
 
             {/* Certificate image */}
-            <div className="rounded-2xl overflow-hidden shadow-2xl">
+            <div className="rounded-xl overflow-hidden border border-white/10 mb-4 bg-zinc-900">
               <img
-                src={certificatesData[activeCert].image}
-                alt={certificatesData[activeCert].title}
-                className="w-full h-auto"
-                loading="eager"
-                decoding="async"
-                fetchPriority="high"
+                src={previewCertificates[activeCert].image}
+                alt={previewCertificates[activeCert].title}
+                className="w-full max-h-[70vh] object-contain mx-auto"
               />
             </div>
 
-            {/* Certificate info */}
-            <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            {/* Info footer */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm">
               <div>
-                <p className="text-white/40 text-sm font-body">{certificatesData[activeCert].type}</p>
-                <h3 className="text-white font-heading font-bold text-xl">{certificatesData[activeCert].title}</h3>
+                <h4 className="font-heading font-bold text-base sm:text-lg text-white">
+                  {previewCertificates[activeCert].title}
+                </h4>
+                <p className="text-white/50 text-xs mt-0.5">
+                  {previewCertificates[activeCert].issuer} • {previewCertificates[activeCert].year}
+                </p>
               </div>
-              <div className="text-right">
-                <p className="text-white/40 text-sm">{certificatesData[activeCert].issuer}</p>
-                <p className="text-white font-heading font-semibold">{certificatesData[activeCert].year}</p>
+
+              {/* Navigation buttons */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() =>
+                    setActiveCert((i) =>
+                      i === 0 ? previewCertificates.length - 1 : i - 1
+                    )
+                  }
+                  className="px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white hover:text-black text-xs font-mono transition-colors"
+                >
+                  ← Prev
+                </button>
+                <span className="text-xs font-mono text-white/40">
+                  {activeCert + 1} / {previewCertificates.length}
+                </span>
+                <button
+                  onClick={() =>
+                    setActiveCert((i) => (i + 1) % previewCertificates.length)
+                  }
+                  className="px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white hover:text-black text-xs font-mono transition-colors"
+                >
+                  Next →
+                </button>
               </div>
             </div>
-
-            {/* Counter */}
-            <p className="text-center text-white/30 text-sm mt-3 font-heading">
-              {activeCert + 1} / {certificatesData.length}
-            </p>
           </div>
         </div>
       )}

@@ -79,9 +79,9 @@ const BackToTop = () => {
         />
         <defs>
           <linearGradient id="btt-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FF4D6D" />
-            <stop offset="50%" stopColor="#7B2FF7" />
-            <stop offset="100%" stopColor="#2F86F7" />
+            <stop offset="0%" style={{ stopColor: "var(--c1)" }} />
+            <stop offset="50%" style={{ stopColor: "var(--c3)" }} />
+            <stop offset="100%" style={{ stopColor: "var(--c4)" }} />
           </linearGradient>
         </defs>
       </svg>

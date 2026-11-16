@@ -1,110 +1,78 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import logo2 from '../assets/images/logo2.svg'
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { prefersReducedMotion, isFinePointer } from "../lib/motion";
-
-gsap.registerPlugin(useGSAP, ScrollTrigger);
-
-const PHRASE = (
-  <>
-    Where Data <Img />
-    Logic <Img />
-    and Performance Meet.<Img />
-    Where Data <Img />
-    Logic <Img />
-    and Performance Meet.<Img />
-  </>
-);
-
-function Img() {
-  return <img src={logo2} alt="" className="w-[5vw] lg:w-[7vw]" loading="lazy" decoding="async" />;
-}
+import { prefersReducedMotion } from "../lib/motion";
 
 const Marquee = () => {
-  const row1Ref = useRef(null);
-  const row2Ref = useRef(null);
-
-  useGSAP(() => {
-    if (prefersReducedMotion()) return;
-    // Skip GSAP ticker on mobile - use CSS animation instead
-    if (!isFinePointer()) return;
-
-    let velocity = 0;
-    let inView = true;
-
-    const st = ScrollTrigger.create({
-      trigger: row1Ref.current?.parentElement,
-      start: "top bottom",
-      end: "bottom top",
-      onUpdate: (self) => {
-        velocity = self.getVelocity();
-      },
-      onToggle: (self) => {
-        inView = self.isActive;
-      },
-    });
-
-    const setX1 = gsap.quickSetter(row1Ref.current, "xPercent");
-    const setX2 = gsap.quickSetter(row2Ref.current, "xPercent");
-    const setSkew = gsap.quickTo(row1Ref.current, "skewX", { duration: 0.4 });
-
-    let pos1 = 0;
-    let pos2 = 0;
-
-    const tick = () => {
-      if (!inView || document.hidden) {
-        velocity *= 0.9;
-        return;
-      }
-      const boost = gsap.utils.clamp(-5, 5, velocity / 900);
-      velocity *= 0.95;
-
-      const speed = 0.35 + Math.abs(boost);
-      const dir = boost >= 0 ? 1 : -1;
-
-      pos1 = gsap.utils.wrap(-50, 0, pos1 - speed * dir);
-      pos2 = gsap.utils.wrap(-50, 0, pos2 + speed * dir);
-
-      setX1(pos1);
-      setX2(pos2);
-      setSkew(gsap.utils.clamp(-8, 8, velocity / 250));
-    };
-
-    gsap.ticker.add(tick);
-    return () => {
-      gsap.ticker.remove(tick);
-      st?.kill();
-    };
-  }, []);
-
-  // Mobile uses CSS animation, desktop uses GSAP ticker
-  const useCssAnimation = !isFinePointer();
+  const PHRASE = "Where Data Logic and Performance Meet.";
+  
+  if (prefersReducedMotion()) return null;
 
   return (
-    <div className='bg-black text-white border-t border-white/5 pb-28 lg:pb-44 overflow-hidden'>
-      {/* Row 1 */}
-      <div className='whitespace-nowrap text-4xl sm:text-5xl lg:text-[7vw] font-heading font-semibold overflow-hidden'>
-        <span
-          ref={row1Ref}
-          className={`flex gap-3 lg:gap-8 mx-4 lg:mx-8 items-center will-change-transform ${
-            useCssAnimation ? 'animate-marquee' : ''
-          }`}
-        >
-          {PHRASE}
-        </span>
+    <div className='bg-black text-white border-t border-white/5 py-20 lg:py-32 overflow-hidden select-none'>
+      <div className="relative flex overflow-x-hidden border-y border-white/5 py-4 lg:py-8 bg-zinc-950/20">
+        <div className="animate-marquee-continuous flex whitespace-nowrap items-center">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="flex items-center mx-4 lg:mx-8">
+              <span className="text-4xl sm:text-5xl lg:text-[6vw] font-heading font-bold uppercase tracking-tighter">
+                {PHRASE}
+              </span>
+              <img 
+                src={logo2} 
+                alt="" 
+                className="w-10 h-10 lg:w-[5vw] lg:h-[5vw] ml-8 lg:ml-16 opacity-50" 
+                loading="lazy" 
+              />
+            </div>
+          ))}
+        </div>
+        <div className="absolute top-0 animate-marquee-continuous2 flex whitespace-nowrap items-center py-4 lg:py-8">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="flex items-center mx-4 lg:mx-8">
+              <span className="text-4xl sm:text-5xl lg:text-[6vw] font-heading font-bold uppercase tracking-tighter">
+                {PHRASE}
+              </span>
+              <img 
+                src={logo2} 
+                alt="" 
+                className="w-10 h-10 lg:w-[5vw] lg:h-[5vw] ml-8 lg:ml-16 opacity-50" 
+                loading="lazy" 
+              />
+            </div>
+          ))}
+        </div>
       </div>
-      {/* Row 2 */}
-      <div className='whitespace-nowrap text-4xl sm:text-5xl lg:text-[7vw] font-heading font-semibold overflow-hidden'>
-        <span
-          ref={row2Ref}
-          className={`flex gap-3 lg:gap-8 mx-4 lg:mx-8 items-center will-change-transform gradient-text ${
-            useCssAnimation ? 'animate-marquee-reverse' : ''
-          }`}
-        >
-          {PHRASE}
-        </span>
+
+      <div className="relative flex overflow-x-hidden mt-4 lg:mt-8">
+        <div className="animate-marquee-reverse-continuous flex whitespace-nowrap items-center">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="flex items-center mx-4 lg:mx-8">
+              <span className="text-4xl sm:text-5xl lg:text-[6vw] font-heading font-bold uppercase tracking-tighter gradient-text">
+                {PHRASE}
+              </span>
+              <img 
+                src={logo2} 
+                alt="" 
+                className="w-10 h-10 lg:w-[5vw] lg:h-[5vw] ml-8 lg:ml-16 opacity-30" 
+                loading="lazy" 
+              />
+            </div>
+          ))}
+        </div>
+        <div className="absolute top-0 animate-marquee-reverse-continuous2 flex whitespace-nowrap items-center">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="flex items-center mx-4 lg:mx-8">
+              <span className="text-4xl sm:text-5xl lg:text-[6vw] font-heading font-bold uppercase tracking-tighter gradient-text">
+                {PHRASE}
+              </span>
+              <img 
+                src={logo2} 
+                alt="" 
+                className="w-10 h-10 lg:w-[5vw] lg:h-[5vw] ml-8 lg:ml-16 opacity-30" 
+                loading="lazy" 
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
