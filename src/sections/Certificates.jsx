@@ -1,22 +1,15 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getLenis } from "../lib/lenis";
-import TiltCard from "../components/TiltCard";
 import certificatesData from "../components/CertificatesData";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
-
 const Certificates = () => {
-  const sectionRef = useRef(null);
   const [activeCert, setActiveCert] = useState(null);
 
-  // Ambil 3 sertifikat unggulan untuk halaman utama
+  // Ambil 3 sertifikat pilihan terbaik
   const previewCertificates = certificatesData.slice(0, 3);
 
-  /* ── Lock scroll saat lightbox terbuka (Lenis-aware) ── */
+  /* ── Lock scroll saat modal terbuka ── */
   useEffect(() => {
     if (activeCert === null) return;
     const lenis = getLenis();
@@ -29,11 +22,9 @@ const Certificates = () => {
     };
   }, [activeCert]);
 
-  /* ── Keyboard: ESC tutup, ←/→ navigasi ── */
-  const lightboxOpen = activeCert !== null;
-
+  /* ── Keyboard: ESC untuk menutup, panah kiri/kanan untuk navigasi ── */
   useEffect(() => {
-    if (!lightboxOpen) return;
+    if (activeCert === null) return;
 
     const onKey = (e) => {
       if (e.key === "Escape") setActiveCert(null);
@@ -47,42 +38,15 @@ const Certificates = () => {
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [lightboxOpen, previewCertificates.length]);
-
-  useGSAP(() => {
-    gsap.from(".cert-title-anim", {
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top 75%",
-        once: true,
-      },
-    });
-
-    gsap.from(".cert-card", {
-      y: 60,
-      opacity: 0,
-      stagger: 0.15,
-      duration: 0.8,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".cert-grid",
-        start: "top 80%",
-        once: true,
-      },
-    });
-  }, { scope: sectionRef });
+  }, [activeCert, previewCertificates.length]);
 
   return (
     <>
-      <section ref={sectionRef} id="certificates" className="bg-black text-white py-24 lg:py-36 border-t border-white/5 relative">
+      <section id="certificates" className="bg-black text-white py-24 lg:py-36 border-t border-white/5 relative">
         {/* Section Header */}
         <div className="main-container mb-12 lg:mb-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-8">
-            <div className="cert-title-anim">
+            <div>
               <h3 className="mb-2 text-sm sm:text-base text-cyan-400 font-mono uppercase tracking-wider">
                 Certifications &amp; Achievements
               </h3>
@@ -97,61 +61,60 @@ const Certificates = () => {
               </p>
               <Link
                 to="/certificates"
-                className="px-5 py-2.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500 hover:text-black text-cyan-300 font-mono text-xs transition-all duration-300 shrink-0 flex items-center gap-2"
+                className="px-5 py-2.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 hover:bg-cyan-500 hover:text-black text-cyan-300 font-mono text-xs transition-all duration-300 shrink-0 flex items-center gap-2 group"
               >
                 <span>Lihat Semua ({certificatesData.length})</span>
-                <span>→</span>
+                <span className="group-hover:translate-x-1 transition-transform">→</span>
               </Link>
             </div>
           </div>
         </div>
 
-        {/* 3 Featured Certificates Grid */}
-        <div className="cert-grid main-container grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        {/* 3 Featured Certificates Grid (Robust Clean Layout - Zero Glitch) */}
+        <div className="main-container grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {previewCertificates.map((cert, index) => (
-            <TiltCard key={cert.id} maxTilt={6} scale={1.01} className="h-full">
-              <button
-                className="cert-card group relative rounded-2xl overflow-hidden cursor-pointer text-left h-full w-full border border-white/10 hover:border-cyan-500/40 transition-all duration-300 bg-zinc-950/60 backdrop-blur-md flex flex-col justify-between"
-                onClick={() => setActiveCert(index)}
-              >
-                {/* Image */}
-                <div className="relative aspect-[16/11] overflow-hidden bg-zinc-900 w-full">
-                  <img
-                    src={cert.image}
-                    alt={cert.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white font-mono text-xs uppercase tracking-widest bg-white/10 border border-white/30 rounded-full px-4 py-1.5 backdrop-blur-sm">
-                      Perbesar Sertifikat ↗
-                    </span>
-                  </div>
+            <div
+              key={cert.id}
+              onClick={() => setActiveCert(index)}
+              className="group cursor-pointer rounded-2xl overflow-hidden border border-white/10 hover:border-cyan-500/40 transition-all duration-300 bg-zinc-950/70 hover:bg-zinc-900/60 flex flex-col justify-between"
+            >
+              {/* Gambar Sertifikat dengan Fallback & Ratio Stabil */}
+              <div className="relative aspect-[4/3] w-full bg-zinc-900 overflow-hidden">
+                <img
+                  src={cert.image}
+                  alt={cert.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 block"
+                  loading="eager"
+                  decoding="async"
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white font-mono text-xs tracking-wider bg-black/60 border border-white/20 rounded-full px-4 py-1.5 backdrop-blur-sm">
+                    Lihat Detail ↗
+                  </span>
+                </div>
+              </div>
+
+              {/* Detail Sertifikat */}
+              <div className="p-5 flex-1 flex flex-col justify-between">
+                <div>
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 block mb-1.5">
+                    {cert.type}
+                  </span>
+                  <h4 className="font-heading font-semibold text-base sm:text-lg leading-snug text-white group-hover:text-cyan-300 transition-colors mb-2">
+                    {cert.title}
+                  </h4>
                 </div>
 
-                {/* Info */}
-                <div className="p-5 border-t border-white/5 flex-1 flex flex-col justify-between w-full">
-                  <div>
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 block mb-1.5">
-                      {cert.type}
-                    </span>
-                    <h4 className="font-heading font-semibold text-base sm:text-lg leading-snug text-white group-hover:text-cyan-300 transition-colors mb-2">
-                      {cert.title}
-                    </h4>
-                  </div>
-                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/5">
-                    <span className="text-xs text-white/50 truncate mr-2">{cert.issuer}</span>
-                    <span className="text-xs font-mono font-bold text-white/30 shrink-0">{cert.year}</span>
-                  </div>
+                <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/5">
+                  <span className="text-xs text-white/50 truncate mr-2">{cert.issuer}</span>
+                  <span className="text-xs font-mono font-bold text-white/30 shrink-0">{cert.year}</span>
                 </div>
-              </button>
-            </TiltCard>
+              </div>
+            </div>
           ))}
         </div>
 
-        {/* Bottom CTA to Full Certificates Page */}
+        {/* CTA Bawah ke Halaman Seluruh Sertifikat */}
         <div className="main-container text-center mt-12">
           <Link
             to="/certificates"
@@ -175,7 +138,7 @@ const Certificates = () => {
             className="relative max-w-4xl w-full bg-zinc-950 border border-white/15 rounded-2xl overflow-hidden shadow-2xl p-4 sm:p-6"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close button */}
+            {/* Tombol Tutup */}
             <button
               onClick={() => setActiveCert(null)}
               className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/10 hover:bg-white hover:text-black text-white flex items-center justify-center text-sm transition-colors cursor-pointer"
@@ -184,16 +147,16 @@ const Certificates = () => {
               ✕
             </button>
 
-            {/* Certificate image */}
-            <div className="rounded-xl overflow-hidden border border-white/10 mb-4 bg-zinc-900">
+            {/* Gambar Modal */}
+            <div className="rounded-xl overflow-hidden border border-white/10 mb-4 bg-zinc-900 flex items-center justify-center">
               <img
                 src={previewCertificates[activeCert].image}
                 alt={previewCertificates[activeCert].title}
-                className="w-full max-h-[70vh] object-contain mx-auto"
+                className="w-full max-h-[70vh] object-contain mx-auto block"
               />
             </div>
 
-            {/* Info footer */}
+            {/* Footer Modal Info */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm">
               <div>
                 <h4 className="font-heading font-bold text-base sm:text-lg text-white">
@@ -204,7 +167,7 @@ const Certificates = () => {
                 </p>
               </div>
 
-              {/* Navigation buttons */}
+              {/* Navigasi Modal */}
               <div className="flex items-center gap-2">
                 <button
                   onClick={() =>

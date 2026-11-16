@@ -140,44 +140,43 @@ const CertificatesPage = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {filteredCerts.map((cert, index) => (
-              <TiltCard key={cert.id} maxTilt={6} scale={1.01} className="h-full">
-                <button
-                  className="group relative rounded-2xl overflow-hidden cursor-pointer text-left h-full w-full border border-white/10 hover:border-cyan-500/40 transition-all duration-300 bg-zinc-950/60 backdrop-blur-md flex flex-col justify-between"
-                  onClick={() => setActiveCert(index)}
-                >
-                  {/* Image */}
-                  <div className="relative aspect-[16/11] overflow-hidden bg-zinc-900 w-full">
-                    <img
-                      src={cert.image}
-                      alt={cert.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white font-mono text-xs uppercase tracking-widest bg-white/10 border border-white/30 rounded-full px-4 py-1.5 backdrop-blur-sm">
-                        Lihat Sertifikat ↗
-                      </span>
-                    </div>
+              <div
+                key={cert.id}
+                onClick={() => setActiveCert(index)}
+                className="group relative rounded-2xl overflow-hidden cursor-pointer text-left h-full w-full border border-white/10 hover:border-cyan-500/40 transition-all duration-300 bg-zinc-950/70 hover:bg-zinc-900/60 backdrop-blur-md flex flex-col justify-between"
+              >
+                {/* Image */}
+                <div className="relative aspect-[4/3] overflow-hidden bg-zinc-900 w-full">
+                  <img
+                    src={cert.image}
+                    alt={cert.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 block"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white font-mono text-xs uppercase tracking-widest bg-black/60 border border-white/30 rounded-full px-4 py-1.5 backdrop-blur-sm">
+                      Lihat Sertifikat ↗
+                    </span>
                   </div>
+                </div>
 
-                  {/* Info */}
-                  <div className="p-5 border-t border-white/5 flex-1 flex flex-col justify-between w-full">
-                    <div>
-                      <span className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 block mb-1.5">
-                        {cert.type}
-                      </span>
-                      <h4 className="font-heading font-semibold text-base sm:text-lg leading-snug text-white group-hover:text-cyan-300 transition-colors mb-2">
-                        {cert.title}
-                      </h4>
-                    </div>
-                    <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/5">
-                      <span className="text-xs text-white/50 truncate mr-2">{cert.issuer}</span>
-                      <span className="text-xs font-mono font-bold text-white/30 shrink-0">{cert.year}</span>
-                    </div>
+                {/* Info */}
+                <div className="p-5 border-t border-white/5 flex-1 flex flex-col justify-between w-full">
+                  <div>
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 block mb-1.5">
+                      {cert.type}
+                    </span>
+                    <h4 className="font-heading font-semibold text-base sm:text-lg leading-snug text-white group-hover:text-cyan-300 transition-colors mb-2">
+                      {cert.title}
+                    </h4>
                   </div>
-                </button>
-              </TiltCard>
+                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/5">
+                    <span className="text-xs text-white/50 truncate mr-2">{cert.issuer}</span>
+                    <span className="text-xs font-mono font-bold text-white/30 shrink-0">{cert.year}</span>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         )}
